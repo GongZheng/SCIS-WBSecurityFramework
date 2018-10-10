@@ -46,7 +46,6 @@
 \author[2]{Zheng GONG}{{cis.gong@gmail.com}}
 \author[2]{Weijie LI}{}
 \author[2]{Tao SUN}{}
-%\author[3]{Fangguo ZHANG}
 \author[3]{Lei WANG}{}
 \author[3]{Xuejia LAI}{}
 
@@ -63,7 +62,6 @@
 %%%   \address[number]{Affiliation, City {\rm Postcode}, Country}
 \address[1]{School of Mathematics and Statistics, Guangdong University of Economics and Finances, Guangzhou {\rm 510320}, China}
 \address[2]{School of Computer Science, Guangzhou {\rm 510631}, China}
-%\address[3]{School of Data and Computer Science , Guangzhou {\rm 510006}, China}
 \address[3]{Department of Computer Science and Technology, Shanghai Jiaotong University, Shanghai {\rm 200240}, China}
 
 %%% Abstract. ÕªÒª
@@ -83,37 +81,45 @@ Cryptographic algorithms are designed for protecting data communication and stor
 
 In some extreme cases, cryptosystems are required to maintain a desired functionality, even under malicious attempts which can have the full access to the underlining systems. To achieve this goal, white-box cryptography was introduced by Chow et al. \cite{DBLP:conf/sacrypt/ChowEJO02}. In the white-box context, a cryptosystem can be fully observable to adversary, while adversary cannot get any information about the key that is using in the system. In \cite{DBLP:conf/sacrypt/ChowEJO02}, Chow et al. also provided a white-box implementation of AES based on look-up tables (LUTs). Lately Chow et al. \cite{DBLP:conf/ccs/ChowEJO02} proposed a white-box implementation of DES based on non-linear and affine functions. After Chow et al.'s seminal papers, many white-box cryptographic results have been published \cite{DBLP:conf/sacrypt/ChowEJO02,cryptoeprint:2006:468,XiaoLai09,DBLP:conf/asiacrypt/BiryukovBK14}.
 
-\section{Related works}
+
+\section{Definitions of White-Box Cryptography}
+Loosely speaking, the white-box cryptography has been motivates from the white-box security. First we give heuristic definitions about the white-box and the black-box securities.
+
+\definition~\textbf{Black-box security.} {The adversary is able to know, choose or adaptively choose inputs and outputs of the function. Given the black-box implementation of the function, the adversary aims to recover the secret values or to misbehave the function.}
+
+\definition~\textbf{White-box security.} {The adversary has full access to the execution environment of the function. Given the white-box implementation of the function, the adversary aims to recover the secret values or to decompose the implementation to find a more compact representation that can be used as an efficient replication of the function.}
+
+
 At Crypto 2001, Barak \textit{et al.}~\cite{DBLP:conf/crypto/BarakGIRSVY01,DBLP:journals/jacm/BarakGIRSVY12} provided an insight on the impossibility of code obfuscation in theory. In~\cite{DBLP:conf/crypto/BarakGIRSVY01}, the virtual-black box property (VBBP) has been proposed for defining the ideal code/program obfuscation. The negative results are given by counterexamples that cannot satisfy the virtual black box property (VBBP) in any circumstance.
 
 In~\cite{DBLP:conf/isw/SaxenaWP09}, Saxena \textit{et al.} formalized the security notions of white-box cryptography using a \textit{white-box property} (WBP in short, hereafter). Based on the definitions of WBP, Saxena \textit{et al.} deliberately proposed an ECC-based example to present the (im)possibility relations between WBP and VBBP. Here we first recall the notation and notions of VBBP and WBP.
 
 \definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.
-\begin{numerate}
+\begin{enumerate}
 
-\item 1. \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}\textPr[\mathcal{O}(Q,k)(a)\neq Q\textPr[k](a)\leq negl(k)]$
+\item 1. \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
 
 \item 2. \textit{(Polynomial slowdown and expansion)}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
 \begin{itemize}
     \item $|\mathcal{O}(Q, q)| \leq p(k)$;
-    \item $\forall a: Q\textPr[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
+    \item $\forall a: Q[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
 \end{itemize}
-\end{numerate}
+\end{enumerate}
 
-We note that $Q\textPr[q](a)$ and $\mathcal{O}(Q,q)(a)$ are an instance of $Q$ with key $q$ and its obfuscation by $\mathcal{O}$.
+We note that $Q[q](a)$ and $\mathcal{O}(Q,q)(a)$ are an instance of $Q$ with key $q$ and its obfuscation by $\mathcal{O}$.
 
-Soundness is also defined under VBBP~\cite{DBLP:conf/crypto/BarakGIRSVY01}. Let $Q\textPr[q]$ be a random instance of a polynomial Turing machine family (PTMF) $Q$ under key $q$. The VBBP requires that whatever information that adversary $\mathcal{A}$ extracts from $\mathcal{O}(Q,q)$, simulator $\mathcal{S}$ can also extract with black-box access to $Q\textPr[q]$. Existing notions of VBBP can be categorized in the following two directions.
+Soundness is also defined under VBBP~\cite{DBLP:conf/crypto/BarakGIRSVY01}. Let $Q[q]$ be a random instance of a polynomial Turing machine family (PTMF) $Q$ under key $q$. The VBBP requires that whatever information that adversary $\mathcal{A}$ extracts from $\mathcal{O}(Q,q)$, simulator $\mathcal{S}$ can also extract with black-box access to $Q[q]$. Existing notions of VBBP can be categorized in the following two directions.
 
-\definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Soundness.}{\mathcal{O} is sound if at least one of the following properties holds.}
-\begin{numerate}
+\definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
+\begin{enumerate}
 \item 1. \textit{Predicate VBBP(pvbbp):}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
 
-\item 2. \texit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
-\end{numerate}
+%\item 2. \texit{Indistinguishability:} $\forall A \in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+\end{enumerate}
 
 Let $E:{0,1}^{n}\times{0,1}^{k}\rightarrow{0,1}^{n}$ denote a block cipher with $n$-bit block length and $k$-bit key length. and $\hat{E}(\hat{k})$ denote a white-box instance of $E$ with a certain key $\hat{k}$. Using the key length $|\hat{k}|$ as the parameter, We propose a new security definition of white-box block ciphers for a more precise modeling.
 
-\definition{~$\hat{k}$-indistinguishability.}\lable{k-ind}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} \leq negl(\hat{k})$, where \\ $Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} =|\textmd{Pr}_{\hat{k} \xleftarrow{R} \mathcal{K}} [A^{E(1^{k},\mathcal{O}(E,k))=1} \wedge S^{\hat{E}}(1^{\hat{k}})\neq 1]|$.
+%\definition{~$\hat{k}$-indistinguishability.}\lable{k-ind}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} \leq negl(\hat{k})$, where \\ $Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} =|\textmd{Pr}_{\hat{k} \xleftarrow{R} \mathcal{K}} [A^{E(1^{k},\mathcal{O}(E,k))=1} \wedge S^{\hat{E}}(1^{\hat{k}})\neq 1]|$.
 
 Loosely speaking, we say a white-box instance $\hat{E}$ of block cipher $E$ is $\hat{k}$-secure where adversary $A$ can successfully attack $\hat{E}$ under the computational complexity $O(2^{|\hat{k}|})$. Therefore, a white-box instance $\hat{E}$ is indistinguishable to an ideal cipher $E$ if and only if $|\hat{k}| = |k|$. From the practical view, we should find the way to let $|\hat{k}|$ close to $|k|$ whilst keep the performance costs in mind.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
