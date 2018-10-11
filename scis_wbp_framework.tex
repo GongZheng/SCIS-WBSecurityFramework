@@ -81,15 +81,7 @@ Cryptographic algorithms are designed for protecting data communication and stor
 
 In some extreme cases, cryptosystems are required to maintain a desired functionality, even under malicious attempts which can have the full access to the underlining systems. To achieve this goal, white-box cryptography was introduced by Chow et al. \cite{DBLP:conf/sacrypt/ChowEJO02}. In the white-box context, a cryptosystem can be fully observable to adversary, while adversary cannot get any information about the key that is using in the system. In \cite{DBLP:conf/sacrypt/ChowEJO02}, Chow et al. also provided a white-box implementation of AES based on look-up tables (LUTs). Lately Chow et al. \cite{DBLP:conf/ccs/ChowEJO02} proposed a white-box implementation of DES based on non-linear and affine functions. After Chow et al.'s seminal papers, many white-box cryptographic results have been published \cite{DBLP:conf/sacrypt/ChowEJO02,cryptoeprint:2006:468,XiaoLai09,DBLP:conf/asiacrypt/BiryukovBK14}.
 
-
-\section{Definitions of White-Box Cryptography}
-Loosely speaking, the white-box cryptography has been motivates from the white-box security. First we give heuristic definitions about the white-box and the black-box securities.
-
-\definition~\textbf{Black-box security.} {The adversary is able to know, choose or adaptively choose inputs and outputs of the function. Given the black-box implementation of the function, the adversary aims to recover the secret values or to misbehave the function.}
-
-\definition~\textbf{White-box security.} {The adversary has full access to the execution environment of the function. Given the white-box implementation of the function, the adversary aims to recover the secret values or to decompose the implementation to find a more compact representation that can be used as an efficient replication of the function.}
-
-
+\section{The existing security framework for white-box cryptography}
 At Crypto 2001, Barak \textit{et al.}~\cite{DBLP:conf/crypto/BarakGIRSVY01,DBLP:journals/jacm/BarakGIRSVY12} provided an insight on the impossibility of code obfuscation in theory. In~\cite{DBLP:conf/crypto/BarakGIRSVY01}, the virtual-black box property (VBBP) has been proposed for defining the ideal code/program obfuscation. The negative results are given by counterexamples that cannot satisfy the virtual black box property (VBBP) in any circumstance.
 
 In~\cite{DBLP:conf/isw/SaxenaWP09}, Saxena \textit{et al.} formalized the security notions of white-box cryptography using a \textit{white-box property} (WBP in short, hereafter). Based on the definitions of WBP, Saxena \textit{et al.} deliberately proposed an ECC-based example to present the (im)possibility relations between WBP and VBBP. Here we first recall the notation and notions of VBBP and WBP.
@@ -97,9 +89,9 @@ In~\cite{DBLP:conf/isw/SaxenaWP09}, Saxena \textit{et al.} formalized the securi
 \definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.
 \begin{enumerate}
 
-\item 1. \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
+\item \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
 
-\item 2. \textit{(Polynomial slowdown and expansion)}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
+\item \textit{(Polynomial slowdown and expansion)}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
 \begin{itemize}
     \item $|\mathcal{O}(Q, q)| \leq p(k)$;
     \item $\forall a: Q[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
@@ -112,16 +104,53 @@ Soundness is also defined under VBBP~\cite{DBLP:conf/crypto/BarakGIRSVY01}. Let 
 
 \definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
 \begin{enumerate}
-\item 1. \textit{Predicate VBBP(pvbbp):}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+\item \textit{Predicate VBBP(pvbbp):}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
 
-%\item 2. \texit{Indistinguishability:} $\forall A \in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+\item \textit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
 \end{enumerate}
+
+\section{Defining white-Box cryptography from practical perspective}
+Losely speaking, the white-box cryptography has been motivates from the white-box security. First we give heuristic definitions about the white-box and the black-box securities.
+
+\definition~\textbf{Black-box security.} {The adversary is able to know, choose or adaptively choose inputs and outputs of the function. Given the black-box implementation of the function, the adversary aims to recover the secret values or to misbehave the function.}
+
+\definition~\textbf{White-box security.} {The adversary has full access to the execution environment of the function. Given the white-box implementation of the function, the adversary aims to recover the secret values or to decompose the implementation to find a more compact representation that can be used as an efficient replication of the function.}
+
+Under the definitions of the black-box and the white-box securities, we propose a practical perspective of the white-box cryptography. The perspective is depicted from what the white-box cryptography can provide and how it should be secure against the adversary. Since the secret values are the most important in the white-box security model. A white-box cryptography can provide the following security properties.
+
+\begin{itemize}
+\item \textbf{Code lifting.}
+
+\item \textbf{Key recovery.}
+
+\item \textbf{Function integrity.}
+
+\end{itemize}
+
+Based on the above security properties that white-box cryptography could provide, one can build  up secure applications enjoys the white-box security. From the life-cycle of secret keys, we depict the typical usages of the white-box cryptography in the following ways.
+
+\begin{itemize}
+\item \textbf{Key distribution.} Normally, the applications need a secure channel to distribute the secret keys between server and client. Although some key distribution schemes can be executed under authenticated channel, but most of them still need the support of certification services (Such as PKI, PKG, etc.). Because the white-box cryptography protects the secret keys from the adversary, the distribution of the keys only requires authenticated channel. If
+
+\item \textbf{Local key management.}
+
+\item \textbf{Dynamic key updating.}
+
+\item \textbf{Key revocation.}
+\end{itemize}
+
+\section{A new practical security framework for white-box cryptography}
 
 Let $E:{0,1}^{n}\times{0,1}^{k}\rightarrow{0,1}^{n}$ denote a block cipher with $n$-bit block length and $k$-bit key length. and $\hat{E}(\hat{k})$ denote a white-box instance of $E$ with a certain key $\hat{k}$. Using the key length $|\hat{k}|$ as the parameter, We propose a new security definition of white-box block ciphers for a more precise modeling.
 
-%\definition{~$\hat{k}$-indistinguishability.}\lable{k-ind}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} \leq negl(\hat{k})$, where \\ $Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} =|\textmd{Pr}_{\hat{k} \xleftarrow{R} \mathcal{K}} [A^{E(1^{k},\mathcal{O}(E,k))=1} \wedge S^{\hat{E}}(1^{\hat{k}})\neq 1]|$.
+\definition{~$\hat{k}$-indistinguishability.}{We say a white-box cryptographic scheme $E$ is $\hat{k}$-ind secure, if the following game is hold. $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} \leq negl(\hat{k})$, where \\ $Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} =|\textmd{Pr}_{\hat{k} \xleftarrow{R} \mathcal{K}} [A^{E(1^{k},\mathcal{O}(E,k))=1} \wedge S^{\hat{E}}(1^{\hat{k}})\neq 1]|$.}
 
 Loosely speaking, we say a white-box instance $\hat{E}$ of block cipher $E$ is $\hat{k}$-secure where adversary $A$ can successfully attack $\hat{E}$ under the computational complexity $O(2^{|\hat{k}|})$. Therefore, a white-box instance $\hat{E}$ is indistinguishable to an ideal cipher $E$ if and only if $|\hat{k}| = |k|$. From the practical view, we should find the way to let $|\hat{k}|$ close to $|k|$ whilst keep the performance costs in mind.
+
+
+
+\section{Conclusion}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Acknowledgements. ÖÂÐ»
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
