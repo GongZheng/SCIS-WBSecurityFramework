@@ -143,7 +143,7 @@ Based on the above security properties that white-box cryptography could provide
 
 Let $E:{0,1}^{n}\times{0,1}^{k}\rightarrow{0,1}^{n}$ denote a block cipher with $n$-bit block length and $k$-bit key length. and $\hat{E}(\hat{k})$ denote a white-box instance of $E$ with a certain key $\hat{k}$. Using the key length $|\hat{k}|$ as the parameter, We propose a new security definition of white-box block ciphers for a more precise modeling.
 
-\definition{~$\hat{k}$-indistinguishability.}{We say a white-box cryptographic scheme $E$ is $\hat{k}$-ind secure, if the following game is hold. $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} \leq negl(\hat{k})$, where \\ $Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} =|\textmd{Pr}_{\hat{k} \xleftarrow{R} \mathcal{K}} [A^{E(1^{k},\mathcal{O}(E,k))=1} \wedge S^{\hat{E}}(1^{\hat{k}})\neq 1]|$.}
+\definition{~$\hat{k}$-indistinguishability.}{We say a white-box cryptographic scheme $E$ is $\hat{k}$-ind secure, if the following game is hold, such that $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} \leq negl(\hat{k})$, where \\ $Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} =|\textmd{Pr}_{\hat{k} \xleftarrow{R} \mathcal{K}} [A^{E(1^{k},\mathcal{O}(E,k))=1} \wedge S^{\hat{E}}(1^{\hat{k}})\neq 1]|$.}
 
 Loosely speaking, we say a white-box instance $\hat{E}$ of block cipher $E$ is $\hat{k}$-secure where adversary $A$ can successfully attack $\hat{E}$ under the computational complexity $O(2^{|\hat{k}|})$. Therefore, a white-box instance $\hat{E}$ is indistinguishable to an ideal cipher $E$ if and only if $|\hat{k}| = |k|$. From the practical view, we should find the way to let $|\hat{k}|$ close to $|k|$ whilst keep the performance costs in mind.
 
