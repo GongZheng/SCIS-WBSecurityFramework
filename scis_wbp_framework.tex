@@ -79,14 +79,27 @@
 \section{Introduction}
 Cryptographic algorithms are designed for protecting data communication and storage security withstand any abuse. Traditionally, the Kerckhoffs's principle requires a cryptosystem should be secure even if everything about the system is public known, except the key. Under this black-box context, various cryptosystems, e.g., symmetric-key and asymmetric-key algorithms, have been proposed and widely used. To protect the secrecy of keys, trusted hardware, such as Trusted Platform Module (TPM) and Secure Element (SE) have been designed for implementing cryptosystems in a hostile environment.
 
-In some extreme cases, cryptosystems are required to maintain a desired functionality, even under malicious attempts which can have the full access to the underlining systems. To achieve this goal, white-box cryptography was introduced by Chow et al. \cite{DBLP:conf/sacrypt/ChowEJO02}. In the white-box context, a cryptosystem can be fully observable to adversary, while adversary cannot get any information about the key that is using in the system. In \cite{DBLP:conf/sacrypt/ChowEJO02}, Chow et al. also provided a white-box implementation of AES based on look-up tables (LUTs). Lately Chow et al. \cite{DBLP:conf/ccs/ChowEJO02} proposed a white-box implementation of DES based on non-linear and affine functions. After Chow et al.'s seminal papers, many white-box cryptographic results have been published \cite{DBLP:conf/sacrypt/ChowEJO02,cryptoeprint:2006:468,XiaoLai09,DBLP:conf/asiacrypt/BiryukovBK14}.
+In some extreme cases, cryptosystems are required to maintain a desired functionality, even under malicious attempts which can have the full access to the underlining systems. To achieve this goal, white-box cryptography was introduced by Chow et al. \cite{DBLP:conf/sacrypt/ChowEJO02}. In the white-box context, a cryptosystem can be fully observable to adversary, while adversary cannot get any information about the key that is using in the system. In \cite{DBLP:conf/sacrypt/ChowEJO02}, Chow \textit{et al.} also provided a white-box implementation of AES based on look-up tables (LUTs). Lately Chow \textit{et al.} \cite{DBLP:conf/ccs/ChowEJO02} proposed a white-box implementation of DES based on non-linear and affine functions. After Chow et al.'s seminal papers, many white-box cryptographic results have been published \cite{DBLP:conf/sacrypt/ChowEJO02,cryptoeprint:2006:468,XiaoLai09,DBLP:conf/asiacrypt/BiryukovBK14}.
 
 \section{The existing security framework for white-box cryptography}
+In Chow \textit{et al.}'s seminal paper \cite{DBLP:conf/sacrypt/ChowEJO02}, first the white-box attack context has been defined to describe the objective of white-box attackers. We recall the description of the white-box attack context as the following definition.
+
+\definition\cite{DBLP:conf/sacrypt/ChowEJO02}~\textbf{White-box attack context.} {The white-box attack context is a severe security model, it assumes that:}
+
+\begin{enumerate}
+\item full-privileged attack software share a host with cryptographic software, having complete access to the implementation of the algorithms;
+
+\item dynamic execution (with instantiated cryptographic keys) can be observed;
+
+\item internal algorithm details are completely visible and alterable at will.
+\end{enumerate}
+
+
 At Crypto 2001, Barak \textit{et al.}~\cite{DBLP:conf/crypto/BarakGIRSVY01,DBLP:journals/jacm/BarakGIRSVY12} provided an insight on the impossibility of code obfuscation in theory. In~\cite{DBLP:conf/crypto/BarakGIRSVY01}, the virtual-black box property (VBBP) has been proposed for defining the ideal code/program obfuscation. The negative results are given by counterexamples that cannot satisfy the virtual black box property (VBBP) in any circumstance.
 
 In~\cite{DBLP:conf/isw/SaxenaWP09}, Saxena \textit{et al.} formalized the security notions of white-box cryptography using a \textit{white-box property} (WBP in short, hereafter). Based on the definitions of WBP, Saxena \textit{et al.} deliberately proposed an ECC-based example to present the (im)possibility relations between WBP and VBBP. Here we first recall the notation and notions of VBBP and WBP.
 
-\definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.
+\definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.}
 \begin{enumerate}
 
 \item \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
@@ -401,4 +414,4 @@ A(d,f)=d^{l}a^{d}(f),
 %%% Other. ÆäËû¸ñÊ½
 \proof %proof. Ö¤Ã÷
 \footnote{Comments.} %footnote. ½Å×¢
-\raisebox{-1pt}[0mm][0mm]{xxxx} %put xxxx upper or lower. ¿ØÖÆxxxxµÄ´¹Ö±Î»ÖÃ
+\raisebox{-1pt}[0mm][0mm]{xxxx} %put xxxx upper or lower. ¿ØÖÆxxxx µÄ´¹Ö±Î»ÖÃ
