@@ -94,8 +94,16 @@ In Chow \textit{et al.}'s seminal paper \cite{DBLP:conf/sacrypt/ChowEJO02}, firs
 \item internal algorithm details are completely visible and alterable at will.
 \end{enumerate}
 
+Based on the white-box attack context, Saxena \textit{et al.} \cite{DBLP:conf/isw/SaxenaWP09} proposed the definition of the weak white-box implementation. Inherently, Biryukov \textit{et al.} \cite{DBLP:conf/asiacrypt/BiryukovBK14} described the definition of the strong white-box implementation. According to their simplicity, these two definitions are widely accepted in the research and engineering of white-box cryptography.
 
-At Crypto 2001, Barak \textit{et al.}~\cite{DBLP:conf/crypto/BarakGIRSVY01,DBLP:journals/jacm/BarakGIRSVY12} provided an insight on the impossibility of code obfuscation in theory. In~\cite{DBLP:conf/crypto/BarakGIRSVY01}, the virtual-black box property (VBBP) has been proposed for defining the ideal code/program obfuscation. The negative results are given by counterexamples that cannot satisfy the virtual black box property (VBBP) in any circumstance.
+\definition\cite{DBLP:conf/isw/SaxenaWP09,DBLP:conf/asiacrypt/BiryukovBK14} Let the pair of algorithms $(E, D)$ be a symmetric-key encryption scheme, which takes key $K$ as parameter. Let $\mathcal{O}_{E_{K}}$ be a function that computes $E_{K}$. We say that
+\begin{itemize}
+\item $\mathcal{O}_{E_{K}}$ is a weak secure white-box implementation for $E_{K}$ if it is computationally hard to obtain $K$ (or a equivalent key $K'$) given full access to $\mathcal{O}_{E_{K}}$.
+
+\item $\mathcal{O}_{E_{K}}$ is a strong secure white-box implementation for $E_{K}$ if it is computationally hard to obtain $D_{0}$ equivalent to $D_{K}$ given full access to $\mathcal{O}_{E_{K}}$.
+\end{itemize}
+
+Moreover, some researchers try to formalize a framework on the security notions of white-box cryptography. At Crypto 2001, Barak \textit{et al.}~\cite{DBLP:conf/crypto/BarakGIRSVY01,DBLP:journals/jacm/BarakGIRSVY12} provided an insight on the impossibility of code obfuscation in theory. In~\cite{DBLP:conf/crypto/BarakGIRSVY01}, the virtual-black box property (VBBP) has been proposed for defining the ideal code/program obfuscation. The negative results are given by counterexamples that cannot satisfy the virtual black box property (VBBP) in any circumstance.
 
 In~\cite{DBLP:conf/isw/SaxenaWP09}, Saxena \textit{et al.} formalized the security notions of white-box cryptography using a \textit{white-box property} (WBP in short, hereafter). Based on the definitions of WBP, Saxena \textit{et al.} deliberately proposed an ECC-based example to present the (im)possibility relations between WBP and VBBP. Here we first recall the notation and notions of VBBP and WBP.
 
@@ -152,7 +160,7 @@ Based on the above security properties that white-box cryptography could provide
 \item \textbf{Key revocation.}
 \end{itemize}
 
-\section{A new practical security framework for white-box cryptography}
+\section{A new practical security notions framework for white-box cryptography}
 
 Let $E:{0,1}^{n}\times{0,1}^{k}\rightarrow{0,1}^{n}$ denote a block cipher with $n$-bit block length and $k$-bit key length. and $\hat{E}(\hat{k})$ denote a white-box instance of $E$ with a certain key $\hat{k}$. Using the key length $|\hat{k}|$ as the parameter, We propose a new security definition of white-box block ciphers for a more precise modeling.
 
