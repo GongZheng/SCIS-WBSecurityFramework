@@ -160,6 +160,16 @@ Based on the above security properties that white-box cryptography could provide
 \item \textbf{Key revocation.}
 \end{itemize}
 
+For symmetric-key algorithms, they might be used for message authentication, data encryption/decrypiton and pseudorandom number generating. According to these different usages, the security requirements for the implementations of those cryptographic algorithms are diverse. Considering this diversity, we define a practical security notion for white-box cryptography as follows.
+
+\begin{itemize}
+\item \textbf{Key integrity.}
+
+\item \textbf{Key confidentiality.}
+
+\item \textbf{Key equivalence.}
+\end{itemize}
+
 \section{A new practical security notions framework for white-box cryptography}
 
 Let $E:{0,1}^{n}\times{0,1}^{k}\rightarrow{0,1}^{n}$ denote a block cipher with $n$-bit block length and $k$-bit key length. and $\hat{E}(\hat{k})$ denote a white-box instance of $E$ with a certain key $\hat{k}$. Using the key length $|\hat{k}|$ as the parameter, We propose a new security definition of white-box block ciphers for a more precise modeling.
