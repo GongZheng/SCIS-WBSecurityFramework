@@ -1,0 +1,435 @@
+%-----------------------------------------------------------------------
+% Template File for Science China Information Sciences
+% Downloaded from http://scis.scichina.com
+% Please compile the tex file using LATEX or PDF-LATEX or CCT-LATEX
+%-----------------------------------------------------------------------
+
+\documentclass{SCIS2018}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Author's definitions for this manuscript
+%%% ×÷Õß¸½¼ÓµÄ¶¨Òå
+%%% ³£ÓÃ»·¾³ÒÑ¾­¼ÓÔØºÃ, ²»ÐèÒªÖØ¸´¼ÓÔØ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Begin. ¿ªÊ¼
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Authors do not modify the information below
+%%% ×÷Õß²»ÐèÒªÐÞ¸Ä´Ë´¦ÐÅÏ¢
+\ArticleType{RESEARCH PAPER}
+%\SpecialTopic{}
+\Year{2018}
+\Month{}
+\Vol{61}
+\No{}
+\DOI{}
+\ArtNo{}
+\ReceiveDate{}
+\ReviseDate{}
+\AcceptDate{}
+\OnlineDate{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% title: ±êÌâ
+%%%   \title{Towards Practical Security Notions Framework For White-Box Cryptography}{title for citation}
+\title{Towards Practical Security Notions Framework for White-Box Cryptography}{Towards Practical Security Notions Framework for White-Box Cryptography}
+
+%%% Corresponding author: Í¨ÐÅ×÷Õß
+%%%   \author[number]{Full name}{{email@xxx.com}}
+%%% General author: Ò»°ã×÷Õß
+%%%   \author[number]{Full name}{}
+\author[1]{Yamin WEN}{}
+\author[2]{Zheng GONG}{{cis.gong@gmail.com}}
+\author[2]{Weijie LI}{}
+\author[2]{Tao SUN}{}
+\author[3]{Lei WANG}{}
+\author[3]{Xuejia LAI}{}
+
+%%% Author information for page head. Ò³Ã¼ÖÐµÄ×÷ÕßÐÅÏ¢
+\AuthorMark{}
+
+%%% Authors for citation. Ê×Ò³ÒýÓÃÖÐµÄ×÷ÕßÐÅÏ¢
+\AuthorCitation{Wen Y, Gong Z, Li W, et al}
+
+%%% Authors' contribution. Í¬µÈ¹±Ï×
+%\contributions{Authors A and B have the same contribution to this work.}
+
+%%% Address. µØÖ·
+%%%   \address[number]{Affiliation, City {\rm Postcode}, Country}
+\address[1]{School of Mathematics and Statistics, Guangdong University of Economics and Finances, Guangzhou {\rm 510320}, China}
+\address[2]{School of Computer Science, Guangzhou {\rm 510631}, China}
+\address[3]{Department of Computer Science and Technology, Shanghai Jiaotong University, Shanghai {\rm 200240}, China}
+
+%%% Abstract. ÕªÒª
+\abstract{According to the Kerckhoffs's principle, the security of a system should be only depended on the security of its secret key. In order to totally secure keys in hostile environments, white-box cryptography (WBC) was introduced by Chow \textit{et al.} \cite{DBLP:conf/sacrypt/ChowEJO02} which gives a software solution for AES implementations in an extremely hostile environment. After Chow \textit{et al.}'s seminal paper, many white-box security notions were proposed from different viewpoints. In this paper, we try to formalize a security notions framework of WBC from the view of practical applications. Firstly, we present some examples to show there might be a gap between the existing security notions of WBC and application requirements. Secondly, we rearrange those notions of WBC using the security definitions of one-wayness, incompressibility, etc. We emphasize that some of the notions were proposed in publications, but we may adjust the definitions and descriptions to be more precise. Finally, a refined security framework of WBC is given based on the modified security notions and definitions.}
+
+%%% Keywords. ¹Ø¼ü´Ê
+\keywords{Security Framework, Formal definition, White-box cryptography}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The main text. ÕýÎÄ²¿·Ö
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+Cryptographic algorithms are designed for protecting data communication and storage security withstand any abuse. Traditionally, the Kerckhoffs's principle requires a cryptosystem should be secure even if everything about the system is public known, except the key. Under this black-box context, various cryptosystems, e.g., symmetric-key and asymmetric-key algorithms, have been proposed and widely used. To protect the secrecy of keys, trusted hardware, such as Trusted Platform Module (TPM) and Secure Element (SE) have been designed for implementing cryptosystems in a hostile environment.
+
+In some extreme cases, cryptosystems are required to maintain a desired functionality, even under malicious attempts which can have the full access to the underlining systems. To achieve this goal, white-box cryptography was introduced by Chow et al. \cite{DBLP:conf/sacrypt/ChowEJO02}. In the white-box context, a cryptosystem can be fully observable to adversary, while adversary cannot get any information about the key that is using in the system. In \cite{DBLP:conf/sacrypt/ChowEJO02}, Chow \textit{et al.} also provided a white-box implementation of AES based on look-up tables (LUTs). Lately Chow \textit{et al.} \cite{DBLP:conf/ccs/ChowEJO02} proposed a white-box implementation of DES based on non-linear and affine functions. After Chow et al.'s seminal papers, many white-box cryptographic results have been published \cite{DBLP:conf/sacrypt/ChowEJO02,cryptoeprint:2006:468,XiaoLai09,DBLP:conf/asiacrypt/BiryukovBK14}.
+
+\section{The existing security framework for white-box cryptography}
+In Chow \textit{et al.}'s seminal paper \cite{DBLP:conf/sacrypt/ChowEJO02}, first the white-box attack context has been defined to describe the objective of white-box attackers. We recall the description of the white-box attack context as the following definition.
+
+\definition\cite{DBLP:conf/sacrypt/ChowEJO02}~\textbf{White-box attack context.} {The white-box attack context is a severe security model, it assumes that:}
+
+\begin{enumerate}
+\item full-privileged attack software share a host with cryptographic software, having complete access to the implementation of the algorithms;
+
+\item dynamic execution (with instantiated cryptographic keys) can be observed;
+
+\item internal algorithm details are completely visible and alterable at will.
+\end{enumerate}
+
+Based on the white-box attack context, Saxena \textit{et al.} \cite{DBLP:conf/isw/SaxenaWP09} proposed the definition of the weak white-box implementation. Inherently, Biryukov \textit{et al.} \cite{DBLP:conf/asiacrypt/BiryukovBK14} described the definition of the strong white-box implementation. According to their simplicity, these two definitions are widely accepted in the research and engineering of white-box cryptography.
+
+\definition\cite{DBLP:conf/isw/SaxenaWP09,DBLP:conf/asiacrypt/BiryukovBK14} Let the pair of algorithms $(E, D)$ be a symmetric-key encryption scheme, which takes key $K$ as parameter. Let $\mathcal{O}_{E_{K}}$ be a function that computes $E_{K}$. We say that
+\begin{itemize}
+\item $\mathcal{O}_{E_{K}}$ is a weak secure white-box implementation for $E_{K}$ if it is computationally hard to obtain $K$ (or a equivalent key $K'$) given full access to $\mathcal{O}_{E_{K}}$.
+
+\item $\mathcal{O}_{E_{K}}$ is a strong secure white-box implementation for $E_{K}$ if it is computationally hard to obtain $D_{0}$ equivalent to $D_{K}$ given full access to $\mathcal{O}_{E_{K}}$.
+\end{itemize}
+
+Moreover, some researchers try to formalize a framework on the security notions of white-box cryptography. At Crypto 2001, Barak \textit{et al.}~\cite{DBLP:conf/crypto/BarakGIRSVY01,DBLP:journals/jacm/BarakGIRSVY12} provided an insight on the impossibility of code obfuscation in theory. In~\cite{DBLP:conf/crypto/BarakGIRSVY01}, the virtual-black box property (VBBP) has been proposed for defining the ideal code/program obfuscation. The negative results are given by counterexamples that cannot satisfy the virtual black box property (VBBP) in any circumstance.
+
+In~\cite{DBLP:conf/isw/SaxenaWP09}, Saxena \textit{et al.} formalized the security notions of white-box cryptography using a \textit{white-box property} (WBP in short, hereafter). Based on the definitions of WBP, Saxena \textit{et al.} deliberately proposed an ECC-based example to present the (im)possibility relations between WBP and VBBP. Here we first recall the notation and notions of VBBP and WBP.
+
+\definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.}
+\begin{enumerate}
+
+\item \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
+
+\item \textit{(Polynomial slowdown and expansion)}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
+\begin{itemize}
+    \item $|\mathcal{O}(Q, q)| \leq p(k)$;
+    \item $\forall a: Q[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
+\end{itemize}
+\end{enumerate}
+
+We note that $Q[q](a)$ and $\mathcal{O}(Q,q)(a)$ are an instance of $Q$ with key $q$ and its obfuscation by $\mathcal{O}$.
+
+Soundness is also defined under VBBP~\cite{DBLP:conf/crypto/BarakGIRSVY01}. Let $Q[q]$ be a random instance of a polynomial Turing machine family (PTMF) $Q$ under key $q$. The VBBP requires that whatever information that adversary $\mathcal{A}$ extracts from $\mathcal{O}(Q,q)$, simulator $\mathcal{S}$ can also extract with black-box access to $Q[q]$. Existing notions of VBBP can be categorized in the following two directions.
+
+\definition\cite{DBLP:conf/isw/SaxenaWP09}~\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
+\begin{enumerate}
+\item \textit{Predicate VBBP(pvbbp):}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+
+\item \textit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+\end{enumerate}
+
+\section{Defining white-Box cryptography from practical perspective}
+Losely speaking, the white-box cryptography has been motivates from the white-box security. First we give heuristic definitions about the white-box and the black-box securities.
+
+\definition~\textbf{Black-box security.} {The adversary is able to know, choose or adaptively choose inputs and outputs of the function. Given the black-box implementation of the function, the adversary aims to recover the secret values or to misbehave the function.}
+
+\definition~\textbf{White-box security.} {The adversary has full access to the execution environment of the function. Given the white-box implementation of the function, the adversary aims to recover the secret values or to decompose the implementation to find a more compact representation that can be used as an efficient replication of the function.}
+
+Under the definitions of the black-box and the white-box securities, we propose a practical perspective of the white-box cryptography. The perspective is depicted from what the white-box cryptography can provide and how it should be secure against the adversary. Since the secret values are the most important in the white-box security model. A white-box cryptography can provide the following security properties.
+
+\begin{itemize}
+\item \textbf{Code lifting.}
+
+\item \textbf{Key recovery.}
+
+\item \textbf{Function integrity.}
+
+\end{itemize}
+
+Based on the above security properties that white-box cryptography could provide, one can build  up secure applications enjoys the white-box security. From the life-cycle of secret keys, we depict the typical usages of the white-box cryptography in the following ways.
+
+\begin{itemize}
+\item \textbf{Key distribution.} Normally, the applications need a secure channel to distribute the secret keys between server and client. Although some key distribution schemes can be executed under authenticated channel, but most of them still need the support of certification services (Such as PKI, PKG, etc.). Because the white-box cryptography protects the secret keys from the adversary, the distribution of the keys only requires authenticated channel. If
+
+\item \textbf{Local key management.}
+
+\item \textbf{Dynamic key updating.}
+
+\item \textbf{Key revocation.}
+\end{itemize}
+
+For symmetric-key algorithms, they might be used for message authentication, data encryption/decrypiton and pseudorandom number generating. According to these different usages, the security requirements for the implementations of those cryptographic algorithms are diverse. Considering this diversity, we define a practical security notion for white-box cryptography as follows.
+
+\begin{itemize}
+\item \textbf{Key integrity.}
+
+\item \textbf{Key confidentiality.}
+
+\item \textbf{Key equivalence.}
+\end{itemize}
+
+\section{A new practical security notions framework for white-box cryptography}
+
+Let $E:{0,1}^{n}\times{0,1}^{k}\rightarrow{0,1}^{n}$ denote a block cipher with $n$-bit block length and $k$-bit key length. and $\hat{E}(\hat{k})$ denote a white-box instance of $E$ with a certain key $\hat{k}$. Using the key length $|\hat{k}|$ as the parameter, We propose a new security definition of white-box block ciphers for a more precise modeling.
+
+\definition{~$\hat{k}$-indistinguishability.}{We say a white-box cryptographic scheme $E$ is $\hat{k}$-ind secure, if the following game is hold, such that $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} \leq negl(\hat{k})$, where \\ $Adv_{A, S, E, \hat{E}}^{\hat{k}-ind} =|\textmd{Pr}_{\hat{k} \xleftarrow{R} \mathcal{K}} [A^{E(1^{k},\mathcal{O}(E,k))=1} \wedge S^{\hat{E}}(1^{\hat{k}})\neq 1]|$.}
+
+Loosely speaking, we say a white-box instance $\hat{E}$ of block cipher $E$ is $\hat{k}$-secure where adversary $A$ can successfully attack $\hat{E}$ under the computational complexity $O(2^{|\hat{k}|})$. Therefore, a white-box instance $\hat{E}$ is indistinguishable to an ideal cipher $E$ if and only if $|\hat{k}| = |k|$. From the practical view, we should find the way to let $|\hat{k}|$ close to $|k|$ whilst keep the performance costs in mind.
+
+
+
+\section{Conclusion}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Acknowledgements. ÖÂÐ»
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\Acknowledgements{This work was supported by National Natural Science Foundation of China (Grant Nos.61572028), National Cryptography Development Fund (MMJJ20180206).}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Supplements. ²¹³ä²ÄÁÏ, ·Ç±ØÑ¡
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\Supplements{Appendix A.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Reference section. ²Î¿¼ÎÄÏ×
+%%% citation in the content using "some words~\cite{1,2}".
+%%% ~ is needed to make the reference number is on the same line with the word before it.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{acm}
+\bibliography{wbp_framework}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Appendix sections. ¸½Â¼ÕÂ½Ú, ·Ç±ØÑ¡
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{appendix}
+%\section{Name}
+
+%\end{appendix}
+
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Some latex examples for this template
+%%% ±¾Ä£°åÊ¹ÓÃµÄlatexÅÅ°æÊ¾Àý
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% sections. ÕÂ½Ú
+\section{Section title}
+\subsection{Subsection title}
+\subsubsection{Subsubsection title}
+
+
+%%% list. ÆÕÍ¨ÁÐ±í
+\begin{itemize}
+\item Aaa aaa.
+\item Bbb bbb.
+\item Ccc ccc.
+\end{itemize}
+
+%%% list-with-other-label. ×Ô±àºÅÁÐ±í
+\begin{itemize}
+\itemindent 2.8em
+\item[(1)] Aaa aaa.
+\item[(2)] Bbb bbb.
+\item[(3)] Ccc ccc.
+\end{itemize}
+
+%%% Theorem-like section. ¶¨Òå¡¢¶¨Àí¡¢ÒýÀí¡¢ÍÆÂÛ
+%%% [name] can be ommited. [name]¿ÉÒÔÊ¡ÂÔ
+\assumption[name]{Content.}
+\corollary[name]{Content.}
+\definition[name]{Content.}
+\example[name]{Content.}
+\lemma[name]{Content.}
+\problem[name]{Content.}
+\proposition[name]{Content.}
+\remark[name]{Content.}
+\theorem[name]{Content.}
+
+%%% If other type of Theorem-like section, ÈôÊ¹ÓÃ¶¨ÀíÑùÊ½µÄÆäËûÇ°×º
+%%% please use \newtheorem command before \begin{document}. ÔÚ "×÷Õß¸½¼ÓµÄ¶¨Òå" ´¦¼ÓÈë\newtheoremÃüÁî
+%%% For example, "Definition" section is commanded by: ÀýÈç "Definition" ÊÇÓÉÒÔÏÂÃüÁî¶¨ÒåµÄ
+\newtheorem{definition}{Definition}
+
+
+%%% 1-figure. µ¥Í¼
+%%% Please use Figure~\ref{fig1} in the text (``~'' is not omitted)
+%%% ÇëÔÚÎÄÖÐÊ¹ÓÃFigure~\ref{fig1}, ²»ÒªÊ¡ÂÔ``~'', ËüÄÜ¹»Ê¹FigureºÍÍ¼ºÅ²»¶ÏÐÐ
+%%% Ë«À¸ÅÅ°æµÄÍ¨À¸Í¼Æ¬, Ê¹ÓÃ\begin{figure*}...\end{figure*}»·¾³, ÆäËû²»±ä
+%%% Ë«À¸ÅÅ°æµÄµ¥À¸Í¼Æ¬, Ê¹ÓÃ\begin{figure}[H]...\end{figure}»·¾³, ÆäËû²»±ä
+\begin{figure}[!t]
+\centering
+\includegraphics{fig1.eps}
+\caption{Caption 1.}
+\label{fig1}
+\end{figure}
+
+%%% 2-figures-in-1-row. ²¢ÅÅÍ¼
+%%% Please use Figure~\ref{fig1} in the text (``~'' is not omitted)
+%%% ÇëÔÚÎÄÖÐÊ¹ÓÃFigure~\ref{fig1}, ²»ÒªÊ¡ÂÔ``~'', ËüÄÜ¹»Ê¹FigureºÍÍ¼ºÅ²»¶ÏÐÐ
+\begin{figure}[!t]
+\centering
+\begin{minipage}[c]{0.48\textwidth}
+\centering
+\includegraphics{fig1.eps}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[c]{0.48\textwidth}
+\centering
+\includegraphics{fig2.eps}
+\end{minipage}\\[3mm]
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\caption{Caption 1.}
+\label{fig1}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\caption{Caption 2.}
+\label{fig2}
+\end{minipage}
+\end{figure}
+
+%%% 2-subfigures-in-1-row. ²¢ÅÅ×ÓÍ¼
+%%% Please use Figure~\ref{fig1} in the text (``~'' is not omitted)
+%%% ÇëÔÚÎÄÖÐÊ¹ÓÃFigure~\ref{fig1}, ²»ÒªÊ¡ÂÔ``~'', ËüÄÜ¹»Ê¹FigureºÍÍ¼ºÅ²»¶ÏÐÐ
+\begin{figure}[!t]
+\centering
+\begin{minipage}[c]{0.48\textwidth}
+\centering
+\includegraphics{subfig1.eps}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[c]{0.48\textwidth}
+\centering
+\includegraphics{subfig2.eps}
+\end{minipage}
+\caption{Caption 1. (a) Subfig1 caption; (b) subfig2 caption.}
+\label{fig1}
+\end{figure}
+
+
+%%% algorithm. Ëã·¨
+%%% Please use Algorithm~\ref{alg1} in the text (``~'' is not omitted)
+%%% ÇëÔÚÎÄÖÐÊ¹ÓÃAlgorithm~\ref{alg1}, ²»ÒªÊ¡ÂÔ``~'', ËüÄÜ¹»Ê¹AlgorithmºÍËã·¨±àºÅ²»¶ÏÐÐ
+%%% Ë«À¸ÅÅ°æµÄÍ¨À¸Ëã·¨, Ê¹ÓÃ\begin{algorithm*}...\end{algorithm*}»·¾³, ÆäËû²»±ä
+%%% Ë«À¸ÅÅ°æµÄµ¥À¸Ëã·¨, Ê¹ÓÃ\begin{algorithm}[H]...\end{algorithm}»·¾³, ÆäËû²»±ä
+\begin{algorithm}
+%\floatname{algorithm}{Algorithm}%¸ü¸ÄËã·¨Ç°×ºÃû³Æ
+%\renewcommand{\algorithmicrequire}{\textbf{Input:}}%¸ü¸ÄÊäÈëÃû³Æ
+%\renewcommand{\algorithmicensure}{\textbf{Output:}}%¸ü¸ÄÊä³öÃû³Æ
+\footnotesize
+\caption{Algorithm caption}
+\label{alg1}
+\begin{algorithmic}[1]
+    \REQUIRE $n \geq 0 \vee x \neq 0$;
+    \ENSURE $y = x^n$;
+    \STATE $y \Leftarrow 1$;
+    \IF{$n < 0$}
+        \STATE $X \Leftarrow 1 / x$;
+        \STATE $N \Leftarrow -n$;
+    \ELSE
+        \STATE $X \Leftarrow x$;
+        \STATE $N \Leftarrow n$;
+    \ENDIF
+    \WHILE{$N \neq 0$}
+        \IF{$N$ is even}
+            \STATE $X \Leftarrow X \times X$;
+            \STATE $N \Leftarrow N / 2$;
+        \ELSE[$N$ is odd]
+            \STATE $y \Leftarrow y \times X$;
+            \STATE $N \Leftarrow N - 1$;
+        \ENDIF
+    \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+%%% simple-table. ¼òµ¥±í¸ñ
+%%% Please use Table~\ref{tab1} in the text (``~'' is not omitted)
+%%% ÇëÔÚÎÄÖÐÊ¹ÓÃTable~\ref{tab1}, ²»ÒªÊ¡ÂÔ``~'', ËüÄÜ¹»Ê¹TableºÍ±íºÅ²»¶ÏÐÐ
+%%% Ë«À¸ÅÅ°æµÄÍ¨À¸±í¸ñ, Ê¹ÓÃ\begin{table*}...\end{table*}»·¾³, ÆäËû²»±ä
+%%% Ë«À¸ÅÅ°æµÄµ¥À¸±í¸ñ, Ê¹ÓÃ\begin{table}[H]...\end{table}»·¾³, ÆäËû²»±ä
+\begin{table}[!t]
+\footnotesize
+\caption{Tabel caption}
+\label{tab1}
+\tabcolsep 49pt %space between two columns. ÓÃÓÚµ÷ÕûÁÐ¼ä¾à
+\begin{tabular*}{\textwidth}{cccc}
+\toprule
+  Title a & Title b & Title c & Title d \\\hline
+  Aaa & Bbb & Ccc & Ddd\\
+  Aaa & Bbb & Ccc & Ddd\\
+  Aaa & Bbb & Ccc & Ddd\\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+%%% linefeed-table. »»ÐÐ±í¸ñ
+%%% Please use Table~\ref{tab1} in the text (``~'' is not omitted)
+%%% ÇëÔÚÎÄÖÐÊ¹ÓÃTable~\ref{tab1}, ²»ÒªÊ¡ÂÔ``~'', ËüÄÜ¹»Ê¹TableºÍ±íºÅ²»¶ÏÐÐ
+\begin{table}[!t]
+\footnotesize
+\caption{Tabel caption}
+\label{tab1}
+\def\tabblank{\hspace*{10mm}} %blank leaving of both side of the table. ×óÓÒÁ½±ßµÄÁô°×
+\begin{tabularx}{\textwidth} %using p{?mm} to define the width of a column. ÓÃp{?mm}¿ØÖÆÁÐ¿í
+{@{\tabblank}@{\extracolsep{\fill}}cccp{100mm}@{\tabblank}}
+\toprule
+  Title a & Title b & Title c & Title d \\\hline
+  Aaa & Bbb & Ccc & Ddd ddd ddd ddd.
+
+  Ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd ddd.\\
+  Aaa & Bbb & Ccc & Ddd ddd ddd ddd.\\
+  Aaa & Bbb & Ccc & Ddd ddd ddd ddd.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+%%% 1-line-equation. µ¥ÐÐ¹«Ê½
+%%% Please use (\ref{eq1}) in the text. Eq.~(\ref{eq1}) is used when the equation number is the beginning of the sentence (``~'' is not omitted)
+%%% ÇëÔÚÎÄÖÐÊ¹ÓÃ(\ref{eq1}), Èç¹ûÊÇ¾ä×Ó¿ªÍ·, Ê¹ÓÃEq.~(\ref{eq1}), ²»ÒªÊ¡ÂÔ``~'', ËüÄÜ¹»Ê¹Eq.ºÍ¹«Ê½ºÅ²»¶ÏÐÐ
+\begin{equation}
+A(d,f)=d^{l}a^{d}(f),
+\label{eq1}
+\end{equation}
+
+%%% 1-line-equation-without-count-number. ²»±àºÅµ¥ÐÐ¹«Ê½
+\begin{equation}
+\nonumber
+A(d,f)=d^{l}a^{d}(f),
+\end{equation}
+
+%%% equation-array. ¹«Ê½×é
+\begin{eqnarray}
+\nonumber
+&X=[x_{11},x_{12},\ldots,x_{ij},\ldots ,x_{n-1,n}]^{\rm T},\\
+\nonumber
+&\varepsilon=[e_{11},e_{12},\ldots ,e_{ij},\ldots ,e_{n-1,n}],\\
+\nonumber
+&T=[t_{11},t_{12},\ldots ,t_{ij},\ldots ,t_{n-1,n}].
+\end{eqnarray}
+
+%%% conditional-equation. Ìõ¼þ¹«Ê½
+%%% Please use (\ref{eq1}) in the text. Eq.~(\ref{eq1}) is used when the equation number is the beginning of the sentence (``~'' is not omitted)
+%%% ÇëÔÚÎÄÖÐÊ¹ÓÃ(\ref{eq1}), Èç¹ûÊÇ¾ä×Ó¿ªÍ·, Ê¹ÓÃEq.~(\ref{eq1}), ²»ÒªÊ¡ÂÔ``~'', ËüÄÜ¹»Ê¹Eq.ºÍ¹«Ê½ºÅ²»¶ÏÐÐ
+\begin{eqnarray}
+\sum_{j=1}^{n}x_{ij}-\sum_{k=1}^{n}x_{ki}=
+\left\{
+\begin{aligned}
+1,&\quad i=1,\\
+0,&\quad i=2,\ldots ,n-1,\\
+-1,&\quad i=n.
+\end{aligned}
+\right.
+\label{eq1}
+\end{eqnarray}
+
+%%% Other. ÆäËû¸ñÊ½
+\proof %proof. Ö¤Ã÷
+\footnote{Comments.} %footnote. ½Å×¢
+\raisebox{-1pt}[0mm][0mm]{xxxx} %put xxxx upper or lower. ¿ØÖÆxxxx µÄ´¹Ö±Î»ÖÃ
