@@ -185,5 +185,35 @@ Under the definitions of the black-box and the white-box securities, we propose 
 \end{itemize}
 }
 
+\frame{
+\frametitle{}
+Based on the above security properties that white-box cryptography could provide, one can build up secure applications enjoys the white-box security. From the life-cycle of secret keys, we depict the typical usages of the white-box cryptography in the following ways.
+
+\begin{itemize}
+\item \textbf{Key distribution.} Normally, the applications need a secure channel to distribute the secret keys between server and client. Although some key distribution schemes can be executed under authenticated channel, but most of them still need the support of certification services (Such as PKI, PKG, etc.). Because the white-box cryptography protects the secret keys from the adversary, the distribution of the keys only requires authenticated channel. If
+
+\item \textbf{Local key management.}
+
+\item \textbf{Dynamic key updating.}
+
+\item \textbf{Key revocation.}
+\end{itemize}
+}
+
+\frame{
+
+\frametitle{}
+For symmetric-key algorithms, they might be used for message authentication, data encryption/decrypiton and pseudorandom number generating. According to these different usages, the security requirements for the implementations of those cryptographic algorithms are diverse. Considering this diversity, we define a practical security notion for white-box cryptography as follows.
+
+\begin{itemize}
+\item \textbf{Key integrity.}
+
+\item \textbf{Key confidentiality.}
+
+\item \textbf{Key equivalence.}
+\end{itemize}
+
+}
+
 
 \end{document}
