@@ -2,6 +2,7 @@
 \usepackage{times}
 \usepackage{tikz}
 \usepackage{beamerthemesplit}
+\usetheme{Antibes}
 \usepackage{tcolorbox}
 
 \title{The Security Framework of White-Box Cryptography Revisited}
@@ -98,7 +99,7 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 \frame{
 \frametitle{The goal of modern cryptography}
 \begin{itemize}
-\item To my opinion, the goal of modern cryptography is to design, analysis, and implement a secrecy system which obtains a mathematically acceptable security proofs.
+\item The goal of modern cryptography is to design, analysis, and implement a secrecy system which obtains a mathematically acceptable security proofs.
 
 \begin{itemize}
 \item Confidentiality / Secrecy
@@ -107,7 +108,12 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 \item Availability
 \end{itemize}
 
-\item Thus provable security must be reduced on \textcolor{red}{a certain model!}
+\item Thus provable security must be reduced on \textcolor{red}{an acceptable model!}
+\begin{itemize}
+\item Ideal cipher model
+\item Random oracle model
+\item Indifferentiability model
+\end{itemize}
 \end{itemize}
 }
 
@@ -129,6 +135,7 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 }
 
 \section{White-box cryptography: basic concepts}
+\subsection{Basic concepts: modeling}
 \frame{
 \frametitle{Black-box model}
 The adversary is able to know, choose or adaptively choose inputs and outputs of the function. Given the black-box implementation of the function, the adversary aims to recover the secret values or to misbehave the function.
@@ -170,19 +177,135 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \end{center}
 }
 
+\frame{
+\frametitle{The negative results on virtual black-box property (VBBP)}
+\begin{itemize}
+\item At Crypto 2001, Barak \textit{et al.} provided an insight on the impossibility of code obfuscation in theory. 
+\item \textcolor{red}{The virtual black-box property (VBBP)} has been proposed for defining the ideal code/program obfuscation. 
+\item The negative results are given by counterexamples that cannot satisfy the virtual black-box property (VBBP) in any circumstance.
+\end{itemize}
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (1)}
+\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.}
+\begin{enumerate}
+
+\item \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
+
+\item \textit{(Polynomial slowdown and expansion)}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
+\begin{itemize}
+    \item $|\mathcal{O}(Q, q)| \leq p(k)$;
+    \newline
+    \item $\forall a: Q[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
+\end{itemize}
+\end{enumerate}
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (2)}
+\begin{itemize}
+\item Let $Q[q]$ be a random instance of a polynomial Turing machine family (PTMF) $Q$ under key $q$. 
+
+\item The VBBP requires that whatever information that adversary $\mathcal{A}$ extracts from $\mathcal{O}(Q,q)$, simulator $\mathcal{S}$ can also extract with black-box access to $Q[q]$. 
+    
+\item The existing notions of VBBP can be categorized in the following two directions.
+
+\end{itemize}
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (3)}
+
+\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
+\begin{enumerate}
+\item \textit{Predicate VBBP(pvbbp):}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+
+\item \textit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+\end{enumerate}
+
+[Saxena 2009] noted that \textit{Predicate VBBP(pvbbp)} is too weak for practice, on the other hand \textit{Indistinguishability} is too strong to be achievable.
+}
+
+\subsection{A case study on DRM required white-box security}
+\frame
+{
+\frametitle{Tamper resistance for DRM}
+
+\begin{itemize}
+\item Michiels and Gorissen [DRM'07] proposed a method to protect the integrity of software which depends on the correct operation of the white-box implementation of a block cipher.
+%\item If an attacker modifies the software, the white-box implementation stops decrypting/encrypting properly.
+\begin{tcolorbox}[title=security goal]
+\item The proposed method assume that it is the goal of an attacker to \textcolor{red}{modify} the protected software without losing the ability to decrypt/encrypt properly.
+\end{tcolorbox}
+\end{itemize}
+
+}
+
+\subsection{Basic concepts: security notions}
 
 \frame{
 \frametitle{The practical perspective of WBC}
 Under the definitions of the black-box and the white-box securities, we propose a practical perspective of the white-box cryptography. The perspective is depicted from what the white-box cryptography can provide and how it should be secure against the adversary. Since the secret values are the most important in the white-box security model. A white-box cryptography can provide the following security properties.
 
 \begin{itemize}
-\item \textbf{Algorithm level: Key recovery.}
+\item \textbf{Algorithm level: \textcolor{red}{Key recovery}.}
 
 \item \textbf{Module level: Function integrity.}
 
 \item \textbf{System level: Code lifting}
 
 \end{itemize}
+}
+
+\frame{
+\frametitle{Basic security definitions for WBC (3)}
+\begin{definition}(\textcolor{red}{Secret key recovery (KR)}). A white-box implementation of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{KR-insecure} if an attacker extracts the secret key $k$ and furthermore has access to the plaintext $P$.
+\end{definition}
+
+\begin{definition}
+(\textcolor{red}{White-box key recovery (KR)}). A white-box implementation of an encoded version of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{WBKR-insecure} if the attacker extracts the secret key $k$ and the inverse mappings of the applied external encodings.
+\end{definition}
+}
+
+\frame{
+\frametitle{Basic security definitions for WBC (Chow \textit{et al.})}
+\begin{itemize}
+\item In SAC 2002, the security notions have  been informally described for white-box cryptography by Chow \textit{et al.}. First the key recovery problem is informally defined by \textcolor{red}{the weak white-box security}
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=8cm, height=4cm]{./pics/weak_white_box_security.png}};
+
+    \begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
+        \draw[red, thin, rounded corners] (0.85,0.7) circle (1.2cm);
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+}
+
+\frame{
+\frametitle{Basic security definitions for WBC (Biryukov \textit{et al.})}
+\begin{itemize}
+\item For more general security, \textcolor{red}{the strong white-box security} has been defined by Chow et al.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=10cm, height=4cm]{./pics/strong_white_box_security.png}};
+
+    %\begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
+        %\draw[green, ultra thick, rounded corners] (0.24,0.18) rectangle (0.50,0.32);
+    %\end{scope}
+\end{tikzpicture}
+\end{center}
 }
 
 \frame{
@@ -201,7 +324,6 @@ Based on the above security properties that white-box cryptography could provide
 }
 
 \frame{
-
 \frametitle{}
 For symmetric-key algorithms, they might be used for message authentication, data encryption/decrypiton and pseudorandom number generating. According to these different usages, the security requirements for the implementations of those cryptographic algorithms are diverse. Considering this diversity, we define a practical security notion for white-box cryptography as follows.
 
@@ -213,6 +335,43 @@ For symmetric-key algorithms, they might be used for message authentication, dat
 \item \textbf{Key equivalence.}
 \end{itemize}
 
+}
+
+\section{Conclusion}
+
+\frame
+{
+\frametitle{Conclusion}
+
+\begin{itemize}
+\setlength{\itemsep}{12pt}
+\item Security notions and definition for \textcolor{red}{precisely} analyze white-box cryptography are at very beginning.
+
+\item Key protection definitions might not suitable in practice for non-key white-box applications, e.g., secure multi-party computation.
+
+\item A secure white-box cryptography does not imply the white-box security of a secrecy system based on it. 
+\end{itemize}
+
+}
+
+\frame
+{
+\begin{center}
+\textbf{Thanks for your attentions!}
+\end{center}
+\begin{center}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=4cm, height=4cm]{./pics/WBC_BG.png}};
+
+    %\begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
+        %\draw[green, ultra thick, rounded corners] (0.24,0.18) rectangle (0.50,0.32);
+    %\end{scope}
+\end{tikzpicture}
+
+\end{center}
 }
 
 
