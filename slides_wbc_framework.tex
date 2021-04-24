@@ -6,7 +6,7 @@
 \usepackage{tcolorbox}
 
 \title{The Security Framework of White-Box Cryptography Revisited}
-\author{scnucrypto\inst{1,2}\\ \url{cis.gong@gmail.com}}
+\author{Tao Sun, Yufeng Tang, Zheng Gong\\ \url{cis.gong@gmail.com}}
 \institute{\inst{1}{School of Computer Science, South China Normal University} \\ \inst{2}{Mobile Applications And Security Engineering Center of Guangdong Province}}
 
 \date{\today}
@@ -177,6 +177,63 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \end{center}
 }
 
+\frame{
+\frametitle{The negative results on virtual black-box property (VBBP)}
+\begin{itemize}
+\item At Crypto 2001, Barak \textit{et al.} provided an insight on the impossibility of code obfuscation for \textcolor{red}{generic programs}.
+\item \textcolor{red}{The virtual black-box property (VBBP)} has been proposed for defining the ideal code/program obfuscation.
+\item The negative results are given by counterexamples that cannot satisfy the virtual black-box property (VBBP) in any circumstance.
+\end{itemize}
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (1)}
+\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.}
+\begin{enumerate}
+
+\item \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
+
+\item \textit{(Polynomial slowdown and expansion)}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
+\begin{itemize}
+    \item $|\mathcal{O}(Q, q)| \leq p(k)$;
+    \newline
+    \item $\forall a: Q[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
+\end{itemize}
+\end{enumerate}
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (2)}
+\begin{itemize}
+\item Let $Q[q]$ be a random instance of a polynomial Turing machine family (PTMF) $Q$ under key $q$.
+
+\item The VBBP requires that whatever information that adversary $\mathcal{A}$ extracts from $\mathcal{O}(Q,q)$, simulator $\mathcal{S}$ can also extract with black-box access to $Q[q]$.
+
+\item The existing notions of VBBP can be categorized in the following two directions.
+\begin{itemize}
+\item \textit{Predicate VBBP(pvbbp)}
+
+\item \textit{Indistinguishability}
+\end{itemize}
+
+\end{itemize}
+
+[Saxena 2009] noted that \textit{Predicate VBBP(pvbbp)} is too weak for practice, on the other hand \textit{Indistinguishability} is too strong to be achievable.
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (3)}
+
+\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
+\begin{enumerate}
+\item \textit{Predicate VBBP(pvbbp):}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+
+\item \textit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+\end{enumerate}
+
+
+}
+
 
 \subsection{Basic concepts: proposed security notions}
 
@@ -185,7 +242,7 @@ According to the black/white-box modeling, the grey-box adversary is able to
 In Chow \textit{et al.}'s seminal work on white-box AES implementations, they proposed some basic notions intuitively.
 \begin{itemize}
 \item White-box attack context
-\item 
+\item
 
 \end{itemize}
 }
@@ -230,55 +287,7 @@ In Chow \textit{et al.}'s seminal work on white-box AES implementations, they pr
 \end{center}
 }
 
-\frame{
-\frametitle{The negative results on virtual black-box property (VBBP)}
-\begin{itemize}
-\item At Crypto 2001, Barak \textit{et al.} provided an insight on the impossibility of code obfuscation in theory. 
-\item \textcolor{red}{The virtual black-box property (VBBP)} has been proposed for defining the ideal code/program obfuscation. 
-\item The negative results are given by counterexamples that cannot satisfy the virtual black-box property (VBBP) in any circumstance.
-\end{itemize}
-}
 
-\frame{
-\frametitle{Recall the definitions of VBBP [Saxena2009] (1)}
-\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.}
-\begin{enumerate}
-
-\item \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
-
-\item \textit{(Polynomial slowdown and expansion)}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
-\begin{itemize}
-    \item $|\mathcal{O}(Q, q)| \leq p(k)$;
-    \newline
-    \item $\forall a: Q[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
-\end{itemize}
-\end{enumerate}
-}
-
-\frame{
-\frametitle{Recall the definitions of VBBP [Saxena2009] (2)}
-\begin{itemize}
-\item Let $Q[q]$ be a random instance of a polynomial Turing machine family (PTMF) $Q$ under key $q$. 
-
-\item The VBBP requires that whatever information that adversary $\mathcal{A}$ extracts from $\mathcal{O}(Q,q)$, simulator $\mathcal{S}$ can also extract with black-box access to $Q[q]$. 
-    
-\item The existing notions of VBBP can be categorized in the following two directions.
-
-\end{itemize}
-}
-
-\frame{
-\frametitle{Recall the definitions of VBBP [Saxena2009] (3)}
-
-\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
-\begin{enumerate}
-\item \textit{Predicate VBBP(pvbbp):}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
-
-\item \textit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
-\end{enumerate}
-
-[Saxena 2009] noted that \textit{Predicate VBBP(pvbbp)} is too weak for practice, on the other hand \textit{Indistinguishability} is too strong to be achievable.
-}
 
 \subsection{A case study on DRM required white-box security}
 \frame
@@ -363,7 +372,7 @@ For symmetric-key algorithms, they might be used for message authentication, dat
 
 \item Key protection definitions might not suitable in practice for non-key white-box applications, e.g., secure multi-party computation.
 
-\item A secure white-box cryptography does not imply the white-box security of a secrecy system based on it. 
+\item A secure white-box cryptography does not imply the white-box security of a secrecy system based on it.
 \end{itemize}
 
 }
