@@ -270,7 +270,7 @@ In Chow \textit{et al.}'s seminal work on white-box AES implementations, they pr
 \frame{
 \frametitle{Basic security definitions for WBC (Biryukov \textit{et al.})}
 \begin{itemize}
-\item For more general security, \textcolor{red}{the strong white-box security} has been defined by Chow et al.
+\item For more general security, \textcolor{red}{the strong white-box security} has been defined by [Biryukov \textit{et al} 2014].
 \end{itemize}
 
 \begin{center}
@@ -288,8 +288,18 @@ In Chow \textit{et al.}'s seminal work on white-box AES implementations, they pr
 }
 
 
+\frame{
+\frametitle{Basic security definitions for WBC (3)}
+\begin{definition}(\textcolor{red}{Secret key recovery (KR-Security)}). A white-box implementation of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{KR-insecure} if an attacker extracts the secret key $k$ and furthermore has access to the plaintext $P$.
+\end{definition}
 
-\subsection{A case study on DRM required white-box security}
+\begin{definition}
+(\textcolor{red}{White-box key recovery (WBKR-Security)}). A white-box implementation of an encoded version of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{WBKR-insecure} if the attacker extracts the secret key $k$ and the inverse mappings of the applied external encodings.
+\end{definition}
+}
+
+\subsection{Basic concepts: Application-oriented security notions}
+
 \frame
 {
 \frametitle{Tamper resistance for DRM}
@@ -304,15 +314,32 @@ In Chow \textit{et al.}'s seminal work on white-box AES implementations, they pr
 
 }
 
+\frame{
+
+\frametitle{White-box security objectives}
+For the application in which a white-box implementation is deployed, [Delerabl$\acute{e}$e \textit{et al.} 2013] discussed the following security objectives.
+
+\begin{itemize}
+\item One-wayness: implies the strong white-box security
+
+\item Incompressibility: prevents the a functionally equivalent deduction \textcolor{red}{with a significantly smaller memory footprint}.
+
+\item Traceability: make a white-box implementation traceable. 
+
+\end{itemize}
+
+}
 
 \frame{
-\frametitle{Basic security definitions for WBC (3)}
-\begin{definition}(\textcolor{red}{Secret key recovery (KR)}). A white-box implementation of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{KR-insecure} if an attacker extracts the secret key $k$ and furthermore has access to the plaintext $P$.
-\end{definition}
+\frametitle{White-box metrics}
+Chow \textit{et al.} [CEJO 2002] introduced a few metrics that try to measure the achieved level of white-box security for LUT-based implementations.
+\begin{itemize}
+\item White-box diversity
 
-\begin{definition}
-(\textcolor{red}{White-box key recovery (KR)}). A white-box implementation of an encoded version of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{WBKR-insecure} if the attacker extracts the secret key $k$ and the inverse mappings of the applied external encodings.
-\end{definition}
+\item White-box ambiguity
+
+\item local security
+\end{itemize}
 }
 
 \section{Our concerns on the security framework of WBC}
