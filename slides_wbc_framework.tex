@@ -134,11 +134,15 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 \end{center}
 }
 
-\section{White-box cryptography: basic concepts}
-\subsection{Basic concepts: modeling}
+\section{The security framework of WBC}
+\subsection{Basic concepts of modeling}
 \frame{
 \frametitle{Black-box model}
-The adversary is able to know, choose or adaptively choose inputs and outputs of the function. Given the black-box implementation of the function, the adversary aims to recover the secret values or to misbehave the function.
+\begin{itemize}
+\item The adversary is able to know, choose or adaptively choose inputs and outputs of the function. 
+
+\item Given the black-box implementation of the function, the adversary aims to \textcolor{red}{recover the secret values} or to \textcolor{orange}{misbehave the function}.
+\end{itemize}
 }
 
 \frame{
@@ -177,65 +181,7 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \end{center}
 }
 
-\frame{
-\frametitle{The negative results on virtual black-box property (VBBP)}
-\begin{itemize}
-\item At Crypto 2001, Barak \textit{et al.} provided an insight on the impossibility of code obfuscation for \textcolor{red}{generic programs}.
-\item \textcolor{red}{The virtual black-box property (VBBP)} has been proposed for defining the ideal code/program obfuscation.
-\item The negative results are given by counterexamples that cannot satisfy the virtual black-box property (VBBP) in any circumstance.
-\end{itemize}
-}
-
-\frame{
-\frametitle{Recall the definitions of VBBP [Saxena2009] (1)}
-\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.}
-\begin{enumerate}
-
-\item \textit{(Functionality)}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
-
-\item \textit{(Polynomial slowdown and expansion)}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
-\begin{itemize}
-    \item $|\mathcal{O}(Q, q)| \leq p(k)$;
-    \newline
-    \item $\forall a: Q[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
-\end{itemize}
-\end{enumerate}
-}
-
-\frame{
-\frametitle{Recall the definitions of VBBP [Saxena2009] (2)}
-\begin{itemize}
-\item Let $Q[q]$ be a random instance of a polynomial Turing machine family (PTMF) $Q$ under key $q$.
-
-\item The VBBP requires that whatever information that adversary $\mathcal{A}$ extracts from $\mathcal{O}(Q,q)$, simulator $\mathcal{S}$ can also extract with black-box access to $Q[q]$.
-
-\item The existing notions of VBBP can be categorized in the following two directions.
-\begin{itemize}
-\item \textit{Predicate VBBP(pvbbp)}
-
-\item \textit{Indistinguishability}
-\end{itemize}
-
-\end{itemize}
-
-[Saxena 2009] noted that \textit{Predicate VBBP(pvbbp)} is too weak for practice, on the other hand \textit{Indistinguishability} is too strong to be achievable.
-}
-
-\frame{
-\frametitle{Recall the definitions of VBBP [Saxena2009] (3)}
-
-\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
-\begin{enumerate}
-\item \textit{Predicate VBBP(pvbbp):}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
-
-\item \textit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
-\end{enumerate}
-
-
-}
-
-
-\subsection{Basic concepts: proposed security notions}
+\subsection{The proposed security notions and their problems}
 
 \frame{
 \frametitle{Chow \textit{et al.}'s definitions}
@@ -248,9 +194,19 @@ In Chow \textit{et al.}'s seminal work on white-box AES implementations, they pr
 }
 
 \frame{
+\frametitle{Basic security definitions for WBC}
+\begin{definition}(\textcolor{red}{Secret key recovery (KR-Security)}). A white-box implementation of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{KR-insecure} if an attacker extracts the secret key $k$ and furthermore has access to the plaintext $P$.
+\end{definition}
+
+\begin{definition}
+(\textcolor{red}{White-box key recovery (WBKR-Security)}). A white-box implementation of an encoded version of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{WBKR-insecure} if the attacker extracts the secret key $k$ and the inverse mappings of the applied external encodings.
+\end{definition}
+}
+
+\frame{
 \frametitle{Basic security definitions for WBC (Chow \textit{et al.})}
 \begin{itemize}
-\item In SAC 2002, the security notions have  been informally described for white-box cryptography by Chow \textit{et al.}. First the key recovery problem is informally defined by \textcolor{red}{the weak white-box security}
+\item In SAC 2002, the security notions have  been informally described for white-box cryptography by Chow \textit{et al.}. First the key recovery problem is informally defined by \textcolor{red}{the weak white-box security} (which equals to \textcolor{red}{KR-Security})
 \end{itemize}
 
 \begin{center}
@@ -270,7 +226,7 @@ In Chow \textit{et al.}'s seminal work on white-box AES implementations, they pr
 \frame{
 \frametitle{Basic security definitions for WBC (Biryukov \textit{et al.})}
 \begin{itemize}
-\item For more general security, \textcolor{red}{the strong white-box security} has been defined by [Biryukov \textit{et al} 2014].
+\item For more general security, \textcolor{red}{the strong white-box security} has been defined by [Biryukov \textit{et al.} 2014] (which connects to \textcolor{red}{KR/WBKR-Security})
 \end{itemize}
 
 \begin{center}
@@ -289,16 +245,93 @@ In Chow \textit{et al.}'s seminal work on white-box AES implementations, they pr
 
 
 \frame{
-\frametitle{Basic security definitions for WBC (3)}
-\begin{definition}(\textcolor{red}{Secret key recovery (KR-Security)}). A white-box implementation of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{KR-insecure} if an attacker extracts the secret key $k$ and furthermore has access to the plaintext $P$.
-\end{definition}
+\frametitle{The problems of the weak/strong white-box security}
+\begin{itemize}
+\item It only works for white-box encryption/decryption, while does not suitable for \textcolor{red}{MAC/signature}.
 
-\begin{definition}
-(\textcolor{red}{White-box key recovery (WBKR-Security)}). A white-box implementation of an encoded version of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{WBKR-insecure} if the attacker extracts the secret key $k$ and the inverse mappings of the applied external encodings.
-\end{definition}
+\item ``A \textcolor{red}{compact} description of $E_{k}$/$/D_{k}$", it is very hard to measure security under this informal definition.
+\end{itemize}
 }
 
-\subsection{Basic concepts: Application-oriented security notions}
+\frame{
+\frametitle{The negative results on virtual black-box property (VBBP)}
+\begin{itemize}
+\item At Crypto 2001, Barak \textit{et al.} provided an insight on the impossibility of code obfuscation for \textcolor{red}{generic programs}.
+\item \textcolor{red}{The virtual black-box property (VBBP)} has been proposed for defining the ideal code/program obfuscation.
+\item The negative results are given by counterexamples that cannot satisfy the virtual black-box property (VBBP) in any circumstance.
+\end{itemize}
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (1)}
+\textbf{Correctness.}{$\mathcal{O}$ is an obfuscator for a polynomial time function $Q$ if the follow properties hold.}
+\begin{enumerate}
+
+\item \textit{(\textcolor{red}{Functionality})}. $\forall k, \forall (q,a)\in \mathcal{K}^{k}_{Q}\times \mathcal{I}^{k}_{Q}:\textmd{Pr}[\mathcal{O}(Q,k)(a) \neq Q [k](a)]\leq negl(k)$
+
+\item \textit{(\textcolor{red}{Polynomial slowdown and expansion})}. $\exists p \in \mathbb{P}, \forall k, \forall q \in \mathcal{K}^{k}_{Q}:$
+\begin{itemize}
+    \item $|\mathcal{O}(Q, q)| \leq p(k)$;
+    \newline
+    \item $\forall a: Q[q](a) \leq t \rightarrow \mathcal{O}(Q,q)(a) \leq p(t)$
+\end{itemize}
+\end{enumerate}
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (2)}
+\begin{itemize}
+\item Let $Q[q]$ be a random instance of a polynomial Turing machine family (PTMF) $Q$ under key $q$.
+
+\item The VBBP requires that whatever information that adversary $\mathcal{A}$ extracts from $\mathcal{O}(Q,q)$, simulator $\mathcal{S}$ can also extract with black-box access to $Q[q]$.
+
+\item The existing notions of VBBP can be categorized in the following two directions.
+\begin{itemize}
+\item \textit{Predicate VBBP}
+
+\item \textit{Indistinguishability}
+\end{itemize}
+
+\end{itemize}
+
+[Saxena 2009] noted that \textit{Predicate VBBP(pvbbp)} is too weak for practice, on the other hand \textit{Indistinguishability} is too strong to be achievable.
+}
+
+\frame{
+\frametitle{Recall the definitions of VBBP [Saxena2009] (3)}
+
+\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
+\begin{enumerate}
+\item \textit{Predicate VBBP:}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+
+\item \textit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge A^{Q[q]}(1^{k}, S^{Q[q]}(1^{k}))\neq 1]|$.
+\end{enumerate}
+
+
+}
+
+\frame{
+\frametitle{Saxena \textit{et al.}'s WBC proposal}
+\begin{enumerate}
+\item Encryption: $E[k]:(m, r) \mapsto (H(\hat{e}(\textcolor{red}{k}^{r}, g)\oplus m), g^{r}) \mapsto (c_{1}, c_{2})$
+
+\item Decryption:$D[k]: (c_{1}, c_{2}) \mapsto H(\hat{e}(c_{2}, k))\oplus c_{1} \mapsto m$
+
+\item White-box encryption: Let $y = \textcolor{red}{\hat{e}(k, g)}$, $\mathcal{O}(E[k]): (m, r) \mapsto (H( \textcolor{red}{y}^{r}) \oplus m, g^{r}) \mapsto (c_{1}, c_{2})$\newline
+
+\end{enumerate}
+
+
+The problem:
+\begin{itemize}
+\item only CPA-security, to achieve CCA-Security requires MAC on message. (\textcolor{red}{which means another authenticated key!})
+
+\item Black-box security can be reduced to the discrete logarithm problem (\textcolor{red}{$k^{r}$}), whilst white-box security is the pairing inversion problem. ($y = \hat{e}(\textcolor{red}{k}, g)$)
+\end{itemize}
+}
+
+
+\subsection{Application-oriented security notions}
 
 \frame
 {
@@ -324,7 +357,7 @@ For the application in which a white-box implementation is deployed, [Delerabl$\
 
 \item Incompressibility: prevents the a functionally equivalent deduction \textcolor{red}{with a significantly smaller memory footprint}.
 
-\item Traceability: make a white-box implementation traceable. 
+\item Traceability: make a white-box implementation traceable.
 
 \end{itemize}
 
@@ -340,6 +373,11 @@ Chow \textit{et al.} [CEJO 2002] introduced a few metrics that try to measure th
 
 \item local security
 \end{itemize}
+}
+
+\frame{
+
+
 }
 
 \section{Our concerns on the security framework of WBC}
