@@ -333,6 +333,33 @@ The problem:
 
 \subsection{Application-oriented security notions}
 
+\frame{
+\frametitle{Chow \textit{et al.}'s White-box metrics}
+[CEJO2002] introduced a few metrics that try to measure the achieved level of white-box security for LUT-based implementations.
+\begin{itemize}
+\item \textcolor{red}{White-box diversity}: how many distinct ways a particular unencoded LUT can be encoded. For key-dependent LUTs, the variation of the embedded key-material needs to be considered.
+\[\mathcal{T'} = g \circ T \circ f, \textmd{WB-div}=\#g \times \#T \times \#f \]
+
+\item \textcolor{red}{White-box ambiguity}: how many distinct ways a specific encoded LUT can be interpreted.
+\[\textmd{WB-amb{T'} = \textmd{WB-div}(T')/\#T'}\]
+
+\item \textcolor{red}{Local security}: Indistinguishability on $\mathcal{T'}$ with different keys and encodings.
+\end{itemize}
+}
+
+\frame{
+\frametitle{The problems of Chow \textit{et al.}'s White-box metrics}
+\begin{itemize}
+\item White-box diversity/ambiguity and local security cannot imply to KR/WBKR-security.
+
+\item The increase number of white-box diversity/ambiguity cannot be related to the achieved security level.
+
+\item It is very hard to accurately count white-box diversity/ambiguity due to the bijection restriction.
+
+\end{itemize}
+
+}
+
 \frame
 {
 \frametitle{Tamper resistance for DRM}
@@ -364,20 +391,33 @@ For the application in which a white-box implementation is deployed, [Delerabl$\
 }
 
 \frame{
-\frametitle{White-box metrics}
-Chow \textit{et al.} [CEJO 2002] introduced a few metrics that try to measure the achieved level of white-box security for LUT-based implementations.
-\begin{itemize}
-\item White-box diversity
+\frametitle{Bock \textit{et al.}'s white-box security with hardware-binding}
+In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box security key derivation function with \textcolor{red}{hardware-binding}, and then built a white-box payment application on it.
 
-\item White-box ambiguity
+\begin{center}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=7cm, height=4.5cm]{./pics/WKDF.png}};
 
-\item local security
-\end{itemize}
+    %\begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
+        %\draw[green, ultra thick, rounded corners] (0.24,0.18) rectangle (0.50,0.32);
+    %\end{scope}
+\end{tikzpicture}
+
+\end{center}
 }
 
 \frame{
+\frametitle{The problems of Bock \textit{et al.}'s hardware bound white-box security}
+\begin{itemize}
+\item It is not truly white-box security anymore if the precondition is a secure hardware. It becomes trusted computing.\newline
 
+\item How to achieve hardware-binding is missing in the paper, the authors suggest using Android Keystore (which is insecure when it is rooted.)\newline
 
+\item \textcolor{red}{If we already had a trusted hardware, why we need white-box cryptography? (e.g., using TEE is a better choice)}
+\end{itemize}
 }
 
 \section{Our concerns on the security framework of WBC}
@@ -461,6 +501,5 @@ For symmetric-key algorithms, they might be used for message authentication, dat
 
 \end{center}
 }
-
 
 \end{document}
