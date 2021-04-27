@@ -6,7 +6,7 @@
 \usepackage{tcolorbox}
 
 \title{The Security Framework of White-Box Cryptography Revisited}
-\author{Tao Sun, Yufeng Tang, Zheng Gong\\ \url{cis.gong@gmail.com}}
+\author{Yufeng Tang, Tao Sun, Zheng Gong\\ \url{cis.gong@gmail.com}}
 \institute{\inst{1}{School of Computer Science, South China Normal University} \\ \inst{2}{Mobile Applications And Security Engineering Center of Guangdong Province}}
 
 \date{\today}
@@ -65,7 +65,7 @@
 }
 
 \frame{
-\frametitle{Define a secrecy system in ``a mathematically acceptable way"}
+\frametitle{Define cryptography in ``a mathematically acceptable way"}
 \textcolor{red}{``As a first step in the mathematical analysis of cryptography, it is necessary to idealize the situation suitably, and to define in a mathematically acceptable way what we shall mean by a secrecy system."}
 
 \begin{flushright}
@@ -73,33 +73,60 @@
 \end{flushright}
 }
 
-\frame{
-\frametitle{The Kerckhoffs' principle of a secrecy system}
+\frame
+{
+\frametitle{The Kerckhoffs' principle of cryptography}
+
+\begin{columns}[c]
+\column{.65\textwidth}
 A cipher should be secure when the enemy cryptanalyst knows all details of the enciphering process and deciphering process except for the value of the secret key.
 
 \begin{flushright}
 - stated in 1881 by the Dutchman Auguste Kerckhoffs (1835-1903).
 \end{flushright}
+\begin{itemize}
+\setlength{\itemsep}{12pt}
+%\item Do not rely on keeping an algorithm secret.
+%\item Publish an algorithm but keep the key secretly.
+\item \textcolor{red}{Have some mathematical foundation for the belief that it will be hard to extract the key.}
+\end{itemize}
 
+\column{.35\textwidth}
+\begin{figure}[htbp]
+\centering
+  \includegraphics[width=4cm, height=3cm]{./pics/Kerckhoffs.jpg}
+\end{figure}
 
-\begin{center}
-\begin{tikzpicture}
-    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=6cm, height=4cm]{./pics/Kerckhoffs.jpg}};
-
-    %\begin{scope}[x={(image.south east)},y={(image.north west)}]
-        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
-        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
-        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
-        %\draw[green, ultra thick, rounded corners] (0.24,0.18) rectangle (0.50,0.32);
-    %\end{scope}
-\end{tikzpicture}
-\end{center}
+\end{columns}
 }
+
+%\frame{
+%\frametitle{The Kerckhoffs' principle of a secrecy system}
+%A cipher should be secure when the enemy cryptanalyst knows all details of the enciphering process and deciphering process except for the value of the secret key.
+%
+%\begin{flushright}
+%- stated in 1881 by the Dutchman Auguste Kerckhoffs (1835-1903).
+%\end{flushright}
+%
+%
+%\begin{center}
+%\begin{tikzpicture}
+%    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=6cm, height=4cm]{./pics/Kerckhoffs.jpg}};
+%
+%    %\begin{scope}[x={(image.south east)},y={(image.north west)}]
+%        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+%        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+%        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
+%        %\draw[green, ultra thick, rounded corners] (0.24,0.18) rectangle (0.50,0.32);
+%    %\end{scope}
+%\end{tikzpicture}
+%\end{center}
+%}
 
 \frame{
 \frametitle{The goal of modern cryptography}
 \begin{itemize}
-\item The goal of modern cryptography is to design, analysis, and implement a secrecy system which obtains a mathematically acceptable security proofs.
+\item The goal of modern cryptography is to design, analysis, and implement a cryptosystem which obtains a mathematically acceptable security proofs.
 
 \begin{itemize}
 \item Confidentiality / Secrecy
@@ -111,7 +138,7 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 \item Thus provable security must be reduced on \textcolor{red}{an acceptable model!}
 \begin{itemize}
 \item Ideal cipher model
-\item Random oracle model
+\item Random oracle model/Standard model
 \item Indifferentiability model
 \end{itemize}
 \end{itemize}
@@ -139,7 +166,7 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 \frame{
 \frametitle{Black-box model}
 \begin{itemize}
-\item The adversary is able to know, choose or adaptively choose inputs and outputs of the function. 
+\item The adversary is able to know, choose or adaptively choose inputs and outputs of the function.
 
 \item Given the black-box implementation of the function, the adversary aims to \textcolor{red}{recover the secret values} or to \textcolor{orange}{misbehave the function}.
 \end{itemize}
@@ -181,17 +208,82 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \end{center}
 }
 
-\subsection{The proposed security notions and their problems}
+\frame
+{
+\frametitle{A typical white-box block cipher in a nutshell}
+\begin{figure}[htbp]
+\centering
+  \includegraphics[width=8cm]{./pics/WBCrypto_Functional_Model.png}
 
-\frame{
-\frametitle{Chow \textit{et al.}'s definitions}
-In Chow \textit{et al.}'s seminal work on white-box AES implementations, they proposed some basic notions intuitively.
-\begin{itemize}
-\item White-box attack context
-\item
+\end{figure}
 
-\end{itemize}
 }
+
+\frame
+{
+ \frametitle{WBC Implementations of DES/AES/SM4/... (All broken!)}
+ \begin{itemize}
+  \item Chow \textit{et al.} Tbox-based WBDES/AES, 2002
+  \item Link and Neumann. Tbox-based WBTDES, 2005
+  \item Bringer. Isomorphism of Polynomials, WBAES, 2006
+  \item Xiao and Lai. 16-bit Tbox WBAES, 2009
+  \item Xiao and Lai. Affine-function WBSM4, 2009
+  \item Karroumi \textit{et al.} Dual-cipher WBAES, 2011
+  \item Shi \textit{et al.} Tbox-based WBSHARK, 2013
+  \item Luo \textit{et al.} ShiftRows table WBAES, 2014
+  \item Su \textit{et al.} Random number WBCLEFIA, 2014
+  \item Shi \textit{et al.} Dual-cipher WBSM4, 2015
+  \end{itemize}
+}
+
+\frame
+{
+ \begin{itemize}
+  \item Baek \textit{et al.} Larger Tbox WBAES, 2016
+  \item Bai and Wu. Uncombinable encodings WBSM4, 2016
+  \item Lee \textit{et al.} Masked WBAES, 2018
+  \item Xu \textit{et al.} Obfuscated round boundaries WBAES/SM4, 2018
+  \item Bai \textit{et al.} Affine-function WBAES, 2018
+  \item Zhou \textit{et al.} Lightweight WBC, 2018
+  \item Lv \textit{et al.} WB-KMAC, 2019
+  \item Lee and Kim. Table redundancy WBAES, 2019
+  \item Lee and Kim. Improved masked WBAES, 2020
+  \item Yao and Chen. Random state WBSM4, 2020
+  \item Yao \textit{et al.} Affine-function WBCLEFIA, 2020
+  \item Yao \textit{et al.} Affine-function WBGIFT, 2021
+ \end{itemize}
+}
+
+\frame
+{
+ \frametitle{Dedicated WBC Proposals}
+ \begin{itemize}
+  \item Biyukov \textit{et al.} ASASA structure, 2014
+  \item Bogdanov and Isobe. SPACE, 2015
+  \item Bogdanov and Isobe. SPNbox, 2016
+  \item Fouque \textit{et al.} WhiteBlock, 2016
+  \item Bai and Wu. AES-Like cipher, 2016
+  \item Cho and Dinur. WEM, 2017
+  \item Lin \textit{et al.} ASASASA structure, 2017
+  \item Xu \textit{et al.}. AES-like cipher, 2017
+  \item Shi \textit{et al.} SDSRS, 2020
+  \item Kwon \textit{et al.} FPL, 2020
+  \item Koike \textit{et al.} Galaxy, 2020
+ \end{itemize}
+}
+
+\subsection{The proposed security notions and their problems}
+%
+%\frame{
+%\frametitle{Chow \textit{et al.}'s definitions}
+%In Chow \textit{et al.}'s seminal work on white-box AES implementations, they proposed some basic notions intuitively.
+%\begin{itemize}
+%\item White-box attack context
+%\item White-box s
+%\item White-box security metrics
+%
+%\end{itemize}
+%}
 
 \frame{
 \frametitle{Basic security definitions for WBC}
@@ -391,12 +483,79 @@ For the application in which a white-box implementation is deployed, [Delerabl$\
 }
 
 \frame{
-\frametitle{Bock \textit{et al.}'s white-box security with hardware-binding}
-In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box security key derivation function with \textcolor{red}{hardware-binding}, and then built a white-box payment application on it.
+\frametitle{Space-hard ciphers:SPACE}
+\begin{itemize}
+\item In CCS 2015, Bogdanov and Isobe proposed a family of white-box block cipher \textcolor{red}{SPACE} with several novel features.
+\begin{itemize}
+\item SPACE-hardness: The implementation of $E_{K}$ is $(M, Z)$-space hard if it is infeasible to en/decrypt any randomly drawn plain/ciphertext with probability of more than $2^{-Z}$ given any code (LUT) of size less than $M$.\newline
+
+\item Strong $(M, Z)-Space hardness$: existential possibility version of $(M, Z)-Space hardness$.
+\end{itemize}
+\end{itemize}
+
+
+
+}
+
+\frame{
+\frametitle{Space-hard ciphers:SPACE}
+\begin{center}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=8cm, height=5.5cm]{./pics/SPACE.png}};
+
+    %\begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
+        %\draw[green, ultra thick, rounded corners] (0.24,0.18) rectangle (0.50,0.32);
+    %\end{scope}
+\end{tikzpicture}
+
+\end{center}
+
+}
+
+
+\frame{
+\frametitle{Space-hard ciphers:SPNBox}
+In Asiacrypt 2016, Bogdanov and Isobe proposed \textcolor{red}{SPNBox}, which can be looked as the SPN version of SPACE.
+\begin{center}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=8.5cm, height=5.5cm]{./pics/SPNBox.png}};
+
+    %\begin{scope}[x={(image.south east)},y={(image.north west)}]
+        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
+        %\draw[green, ultra thick, rounded corners] (0.24,0.18) rectangle (0.50,0.32);
+    %\end{scope}
+\end{tikzpicture}
+
+\end{center}
+
+}
+
+\frame
+{
+\frametitle{The problems of Space-hard ciphers}
+\begin{itemize}
+\item \textcolor{red}{Performance}: The costs of LUTs and computation are higher than CEJO-like constructions.\newline
+
+\item \textcolor{red}{Weak WBC}: only achieves the weak white-box security (add encodings might be helpful but even worse on performance).
+
+\item \textcolor{red}{Accuracy of space-hardness}: For example, if give 1000 bytes out of a 1024 bytes LUT, does attacker need to exhaustively search the remain 24 bytes?
+
+\item \textcolor{red}{Compatibility}: only works for new designs (especially block ciphers).
+\end{itemize}
+}
+
+\frame{
+\frametitle{Bock \textit{et al.}'s white-box security with hardware/application-binding}
+In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box security key derivation function with \textcolor{red}{hardware/application-binding}, and then built a white-box payment application on it.
 
 \begin{center}
 \begin{tikzpicture}
-    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=7cm, height=4.5cm]{./pics/WKDF.png}};
+    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=8cm, height=5cm]{./pics/WKDF.png}};
 
     %\begin{scope}[x={(image.south east)},y={(image.north west)}]
         %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
@@ -410,7 +569,7 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 }
 
 \frame{
-\frametitle{The problems of Bock \textit{et al.}'s hardware bound white-box security}
+\frametitle{The problems of Bock \textit{et al.}'s hardware/application bound white-box security}
 \begin{itemize}
 \item It is not truly white-box security anymore if the precondition is a secure hardware. It becomes trusted computing.\newline
 
@@ -421,7 +580,7 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 }
 
 \section{Our concerns on the security framework of WBC}
-
+\subsection{The working range of WBC and its security framework}
 \frame{
 \frametitle{The practical perspective of white-box security}
 Under the definitions of the black-box and the white-box securities, we propose a practical perspective of the white-box cryptography. The perspective is depicted from what the white-box cryptography can provide and how it should be secure against the adversary. Since the secret values are the most important in the white-box security model. A white-box cryptography can provide the following security properties.
@@ -462,6 +621,33 @@ For symmetric-key algorithms, they might be used for message authentication, dat
 
 \item \textbf{Key equivalence.}
 \end{itemize}
+
+}
+
+\subsection{Adaptive DFA/DCA model and its application}
+\frame
+{
+\frametitle{Adaptive DFA/DCA model}
+\begin{itemize}
+\setlength{\itemsep}{12pt}
+\item The proposed DFA/DCA techniques are mainly in grey-box model.
+\begin{itemize}
+\setlength{\itemsep}{12pt}
+\item The grey-box adversary does not know the details of WBC implementation.
+\item Normally exploit with blind injection.
+\item Some papers use reverse-engineering at first.
+\end{itemize}
+
+\item We assume a \textcolor{red}{greywhite}-box model.
+\begin{itemize}
+\setlength{\itemsep}{12pt}
+\item The greywhite-box adversary still does not know the details of WBC implementation, but might know some parameters, e.g., rounds, sbox sizes.
+\item Exploit with tweakable injection based on known parameters.
+\item Avoid the reverse engineering.
+\end{itemize}
+
+\end{itemize}
+
 
 }
 
