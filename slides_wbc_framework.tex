@@ -579,11 +579,329 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 \end{itemize}
 }
 
-\section{Our concerns on the security framework of WBC}
-\subsection{The working range of WBC and its security framework}
+\section{Adaptive SCA model and its applications}
+\subsection{Adaptive SCA model}
+%\frame{
+%\frametitle{}
+%Based on the above security properties that white-box cryptography could provide, one can build up secure applications enjoys the white-box security. From the life-cycle of secret keys, we depict the typical usages of the white-box cryptography in the following ways.
+
+%\begin{itemize}
+%\item \textbf{Key distribution.} Normally, the applications need a secure channel to distribute the secret keys between server and client. Although some key distribution schemes can be executed under authenticated channel, but most of them still need the support of certification services (Such as PKI, PKG, etc.). Because the white-box cryptography protects the secret keys from the adversary, the distribution of the keys only requires authenticated channel. If
+
+%\item \textbf{Local key management.}
+
+%\item \textbf{Dynamic key updating.}
+
+%\item \textbf{Key revocation.}
+%\end{itemize}
+%}
+
+\frame{
+\frametitle{SCA Model on WBC}
+
+}
+
+\frame
+{
+	\frametitle{Revisiting the Countermeasures of DFA/DCA }
+	\begin{itemize}
+		\item The obfuscation and the runtime protections (e.g., the desynchronization, virtual machine, dummies, and duplicates).
+		\item The well-known SCA countermeasures (e.g., redundancy, masking, and shuffling).
+	\end{itemize}
+}
+
+\frame
+{
+	\frametitle{The Adaptive Side-Channel Analysis Model on WBC}
+	Although some improved white-box schemes can prevent the generalized SCA attacks (e.g., DFA and DCA), a white-box adversary can combine the powerful ability in the \textit{white-box context} with the technique of well-studied SCA attacks.
+	\\[2ex]
+	An \textbf{Adaptive Side-Channel Analysis} is an SCA attack scenario in which the attacker has the ability
+	to make her choice of the inputs to the cryptographic
+	function based on the previous chosen plaintexts queries and their corresponding intermediates.
+}
+
+%\frame
+%{
+%\frametitle{Adaptive DFA/DCA model}
+%\begin{itemize}
+%\setlength{\itemsep}{12pt}
+%\item The proposed DFA/DCA techniques are mainly in grey-box model.
+%\begin{itemize}
+%\setlength{\itemsep}{12pt}
+%\item The grey-box adversary does not know the details of WBC implementation.
+%\item Normally exploit with blind injection.
+%\item Some papers use reverse-engineering at first.
+%\end{itemize}
+
+%\item We assume a \textcolor{red}{adaptive SCA model}.
+%\begin{itemize}
+%\setlength{\itemsep}{12pt}
+%\item The greywhite-box adversary still does not know the details of WBC implementation, but might know some parameters, e.g., rounds, sbox sizes.
+%\item Exploit with tweakable injection based on known parameters.
+%\item Avoid the reverse engineering.
+%\end{itemize}
+
+%\end{itemize}
+%}
+
+\frame
+{
+	\frametitle{The abilities of adaptive SCA attacker}
+	\begin{itemize}
+		\item (For choosing plaintexts.) The adversary has in-depth reverse engineering and cryptographic skills to de-obfuscate the white-box implementation.
+		\item (For practical SCA attack.) The adversary is capable of the generalized SCA attacks (e.g., DFA and DCA) on the white-box implementation.
+	\end{itemize}
+	This is assumed that the adversary has the identical abilities to a white-box attacker when querying the cryptographic function for choosing inputs/plaintexts. E.g., the adversary can deconstruct step by step the algorithms and collect/tamper any intermediate values before the SCA attack.
+}
+
+\frame
+{
+	\frametitle{The steps of adaptive SCA attack}
+	\begin{itemize}
+		\item The adversary de-obfuscates the white-box implementation with reverse engineering effort and therefore exposes the intellectual property.
+		\item The adversary collects the target inputs/plaintexts by analyzing the intermediate values of the pinpointed sub-function.
+		\item The adversary mounts the generalized SCA attacks on the white-box implementation with the chosen inputs/plaintexts.
+	\end{itemize}
+}
+
+\subsection{Adaptive DFA on Table Redundancy WBAES}
+\frame
+{
+	\frametitle{Table Redundancy Method for Protecting Against DFA}
+	In 2019, Lee \textit{et al.} [eprint 2019/959] prorosed a table redundancy scheme based on Chow \textit{et al.}'s white-box AES for protecting against DFA.
+	\\[2ex]
+	Table redundancy method uses multiple branches of look-up tables for the target rounds (Round 7, 8, and 9) and xor the output to detect the modification.
+}
+
+\frame
+{
+	\frametitle{Different types of LUTs in Chow \textit{et al.}'s WBAES}
+	\begin{figure}
+		\centering
+		\begin{minipage}[b]{0.3\textwidth}
+			%\centering
+			\includegraphics[width=3cm]{./pics/TMC.png}
+			\caption{Type II: key-dependent T-boxes/$Ty_i$ table}
+		\end{minipage}%
+		\hspace{0.04\textwidth}%
+		\begin{minipage}[b]{0.3\textwidth}
+			%\centering
+			\includegraphics[width=3cm]{./pics/type3.png}
+			\caption{Type III: compatibility of encodings
+				between consecutive rounds}
+		\end{minipage}
+		\hspace{0.04\textwidth}%
+		\begin{minipage}[b]{0.2\textwidth}
+			%\centering
+			\includegraphics[width=2.7cm]{./pics/type4.png}
+			\caption{Type IV: encoded nibble XOR table}
+		\end{minipage}
+	\end{figure}
+}
+
+\frame
+{
+	\begin{figure}
+		\centering
+		\includegraphics[width=5cm]{./pics/type234.png}
+		\caption{An overview of \textit{TypeII}, \textit{TypeIII} and \textit{TypeIV} table lookups.}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Techniques of Table Redundancy Scheme}
+	The distribution of the two redundant computations can be shown as four parts as follows.
+	\begin{itemize}
+		\item Sharing the look-up tables from Round 1 to 6.
+		\item Transforming independently in parallel with two sets of look-up tables from Round 7 to \textit{TypeII} in Round 9.
+		\item XOR (by a type of \textit{TypeIV}) the output of two redundant computations.
+		\item Sharing the look-up tables from 9-th \textit{TypeIV\_II} to Round 10.
+	\end{itemize}
+}
+
+\frame
+{
+	\begin{figure}
+		\centering
+		\includegraphics[width=8cm]{./pics/TRS1.pdf}
+		\caption{The lookup sequence of table redundant scheme.}
+	\end{figure}
+}
+
+\frame
+{
+	\begin{itemize}
+		\item $MB_{l},\ MB_{r} \in \mathbb{F}_{2}^{32\times 32}$, the left and right 32-bit linear encoding.
+		\item $x_{l},\ x_{r} \in \mathbb{F}_{2}^{32}$, the underlying state of 9-th \textit{TypeII} output.
+	\end{itemize}
+	The XOR phase can be shown as 
+	\[MB_{l}\cdot x_{l} \oplus MB_{r}\cdot x_{r} = (MB_{l} \oplus MB_{r}) \cdot x,\ iff\ x_{l} = x_{r} = x.\]
+	\\[2ex]
+	The inverse Mixing Bijection $MB^{-1} \in \mathbb{F}_{2}^{32\times 32}$ in 9-th \textit{TypeIII} can be depicted as \[MB^{-1} = (MB_{l} \oplus MB_{r})^{-1}.\]
+}
+
+\frame
+{
+	\frametitle{Adaptive DFA against Table Redundancy Method}
+	\begin{itemize}
+		\item $y_{l}, y_{r} \in \mathbb{F}_{2}^{8}$, an 8-bit input value of the two 9-th \textit{TypeII} respectively.
+		\item $x \in \mathbb{F}_{2}^{8}$, an 8-bit underlying state of $y_{l}$ and $y_{r}$.
+		\item $P_{l}, P_{r} \in \mathbb{F}_{2}^{8}$, an 8-bit input decoding.
+	\end{itemize}
+	For the decoding process of 9-th round input, we have
+	\[x = P_{l}(y_{l}) = P_{r}(y_{r}).\]
+}
+
+\frame
+{
+	\begin{figure}
+		\centering
+		\includegraphics[width=8cm]{./pics/TRS2.pdf}
+		\caption{The 9-th round input in the lookup sequence of table redundant scheme.}
+	\end{figure}
+}
+
+\frame
+{
+	Since $x$ take 256 different values, the 256 pairs of each ($y_{l},y_{r}$) can be collected. 
+	\\[2ex]
+	Let $\mathcal{T}$ be a set of pairs values, such that
+	\[\mathcal{T}=\{(y_{l},y_{r})\ |\ y_{l} \in \mathbb{F}_{2}^{8},\ y_{r} \in \mathbb{F}_{2}^{8}\}\ with\ \#\mathcal{T}=256.\]
+}
+
+\frame
+{
+	The injection on the entry of the 9-th round can be concluded by the following steps.
+	\begin{itemize}
+		\item Collecting the pairs values of $\mathcal{T}$ by repeatedly running the cryptographic program with random plaintexts.
+		\item Getting a fault-free cipertext with a chosen plaintext $P$.
+		\item Replacing the ($y_{l},y_{r}$) with other pairs in $\mathcal{T}_{i}\backslash(y_{l},y_{r})$ and collecting the faulty ciphertexts by repeatedly running the cryptographic program with $P$.
+		\item Using the 9-th round byte-fault model to perform the analysis between the fault-free and faulty ciphertexts.
+	\end{itemize}
+}
+
+\subsection{Adaptive DCA on Improved Masking WBAES}
+
+\frame
+{
+	\frametitle{Improved Masking Method for Protecting Against DCA}
+	Improved masking method [Lee \textit{et al.} 2020] applies the masking technique to the key-dependent intermediate value. Such scheme adds the random masks on the $Ty_i$ outputs and encodes the masked values and the masks used.
+	\\[2ex]
+	The unmasking is designed to combine with input decoding of the second round.
+}
+
+\frame
+{
+	\frametitle{\textit{TypeII\_MO} table}
+	Masks are randomly picked for each input, and the $8\times 8$ linear transformations are applied to the mask in \textit{TypeII\_MO} table.
+	\begin{figure}
+		\centering
+		\includegraphics[width=5cm]{./pics/IIMO.pdf}
+		\caption{\textit{TypeII\_MO} table.}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{\textit{TypeII\_MIMO} table}
+	The encoded masked 1-st round output and the mask are combined by XOR to unmask in the input decoding phase of the second round.
+	\begin{figure}
+		\centering
+		\includegraphics[width=3.0cm]{./pics/IIMIMO.pdf}
+		\caption{\textit{TypeII\_MIMO} table.}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Adaptive DCA against Improved Masking Method}
+	\begin{figure}
+		\centering
+		\includegraphics[width=3.5cm]{./pics/IIMIMO1.pdf}
+		\caption{The underlying mask $m$ of \textit{vs} and \textit{ms} is identical to each other.}
+	\end{figure}
+	
+	If the mask of different plaintexts is \textbf{constant}, the combination of the mask and linear encodings are converted into \textbf{an affine function}. Hence, the mask is fail to hide the correlation between the key-dependent output and  hypothetical value.
+}
+
+
+\frame
+{
+	\frametitle{Review the data flow of Improved Masking scheme}
+	\begin{figure}
+		\centering
+		\includegraphics[width=7cm]{./pics/DCA_R12.pdf}
+		\caption{Lookup sequence from the first column in the first round to the first byte at the second round. (Solid line represents the data flow of masked values while the dotted line denotes the one of mask used.)}
+	\end{figure}
+}
+
+\frame
+{
+	\begin{figure}
+		\centering
+		\begin{minipage}[b]{0.35\textwidth}
+			%\centering
+			\includegraphics[width=4.5cm]{./pics/DCA_comR12.pdf}
+			\caption{Composition of the encoded masked 1-st round output (solid line).}
+		\end{minipage}%
+		\hspace{0.1\textwidth}%
+		\begin{minipage}[b]{0.35\textwidth}
+			%\centering
+			\includegraphics[width=4.5cm]{./pics/DCA_comR12M.pdf}
+			\caption{Composition of the encoded mask in 1-st round (dotted line).}
+		\end{minipage}
+	\end{figure}
+}
+
+\frame
+{
+	The encoded and masked 1-st round functions are shown in below.
+	\[
+	\begin{aligned}
+	y_i(x_0,x_1,x_2,x_3)=&Q_i\circ(mc_{i,0}\cdot S[x_0\oplus k_0]\oplus mc_{i,1}\cdot S[x_1\oplus k_1]\\
+	&\oplus mc_{i,2}\cdot S[x_2\oplus k_2]\oplus mc_{i,3}\cdot S[x_3\oplus k_3]\oplus M_i).
+	\end{aligned}
+	\]
+	The encoded output of mask table can be represent as follows.
+	\[y'_i(x_0,x_1,x_2,x_3)=Q'_i\circ(M_i),\]
+	where $M_i$ denotes the mask used, $mc_i$ denotes the \textbf{MixColumns} coefficient, $0\leq i\leq 3$ denote the byte index of the column.
+}
+
+\frame
+{
+	Note that $x_0||x_1||x_2||x_3\ \in \mathbb{F}_{2}^{32}$, $M_i$ take all the values in $\mathbb{F}_{2}^{8}$. One can sort the inputs by the identical output $y'_i$ of mask table (e.g., get the input set $\mathcal{W}=\{x|y'(x)=c,x\in\mathbb{F}_{2}^{32}\}$, where $c$ is a constant).
+	\\[2ex]
+	In this way, for any input $x\in S$, the mask used of $y(x)$ is a constant.
+	
+}
+
+\frame
+{
+	The detailed attack can be represented by the following steps.
+	\begin{itemize}	
+		\item Collecting the plaintexts to form the set $\mathcal{W}$ which have the same output of $y'_0$ by enumerating the first two bytes of the inputs and fixing the other bytes of $y'_0$ (e.g., $y'_0(x_0,x_1,0,0)$).
+		\item Collecting the bit traces $\upsilon$ which include the values of the outputs of $y_0$ by choosing the plaintexts in $\mathcal{W}$.
+	\end{itemize}
+}
+
+\frame
+{
+	\begin{itemize}
+		\item Selecting the XOR of the first two outputs of MixColumns as the hypothetical value $b$, that is
+		\begin{displaymath}
+		b=mc_{i,0}\cdot S(x_0\oplus k'_0)\oplus mc_{i,1}\cdot S(x_1\oplus k'_1),
+		\end{displaymath}
+		where $k'_0$ and $k'_1$ are key guess.
+		\item Mounting the DCA attack on analyzing the correlation between $\upsilon$ and $b$ to recover $k_0$ and $k_1$.
+	\end{itemize}
+}
+
+\section{Conclusion}
+
 \frame{
 \frametitle{The practical perspective of white-box security}
-Under the definitions of the black-box and the white-box securities, we propose a practical perspective of the white-box cryptography. The perspective is depicted from what the white-box cryptography can provide and how it should be secure against the adversary. Since the secret values are the most important in the white-box security model. A white-box cryptography can provide the following security properties.
+Since the secret values are the most important in the white-box security model. A white-box cryptography should provide the following security properties.
 
 \begin{itemize}
 \item \textbf{Algorithm level: \textcolor{red}{Key recovery}.}
@@ -597,22 +915,7 @@ Under the definitions of the black-box and the white-box securities, we propose 
 
 \frame{
 \frametitle{}
-Based on the above security properties that white-box cryptography could provide, one can build up secure applications enjoys the white-box security. From the life-cycle of secret keys, we depict the typical usages of the white-box cryptography in the following ways.
-
-\begin{itemize}
-\item \textbf{Key distribution.} Normally, the applications need a secure channel to distribute the secret keys between server and client. Although some key distribution schemes can be executed under authenticated channel, but most of them still need the support of certification services (Such as PKI, PKG, etc.). Because the white-box cryptography protects the secret keys from the adversary, the distribution of the keys only requires authenticated channel. If
-
-\item \textbf{Local key management.}
-
-\item \textbf{Dynamic key updating.}
-
-\item \textbf{Key revocation.}
-\end{itemize}
-}
-
-\frame{
-\frametitle{}
-For symmetric-key algorithms, they might be used for message authentication, data encryption/decrypiton and pseudorandom number generating. According to these different usages, the security requirements for the implementations of those cryptographic algorithms are diverse. Considering this diversity, we define a practical security notion for white-box cryptography as follows.
+For symmetric-key algorithms, they might be used for message authentication, data encryption/decryption and pseudorandom number generating. According to these different usages, the security requirements for the implementations of those cryptographic algorithms are diverse. Considering this diversity, we define a practical security notion for white-box cryptography as follows.
 
 \begin{itemize}
 \item \textbf{Key integrity.}
@@ -624,44 +927,15 @@ For symmetric-key algorithms, they might be used for message authentication, dat
 
 }
 
-\subsection{Adaptive DFA/DCA model and its application}
-\frame
-{
-\frametitle{Adaptive DFA/DCA model}
-\begin{itemize}
-\setlength{\itemsep}{12pt}
-\item The proposed DFA/DCA techniques are mainly in grey-box model.
-\begin{itemize}
-\setlength{\itemsep}{12pt}
-\item The grey-box adversary does not know the details of WBC implementation.
-\item Normally exploit with blind injection.
-\item Some papers use reverse-engineering at first.
-\end{itemize}
-
-\item We assume a \textcolor{red}{greywhite}-box model.
-\begin{itemize}
-\setlength{\itemsep}{12pt}
-\item The greywhite-box adversary still does not know the details of WBC implementation, but might know some parameters, e.g., rounds, sbox sizes.
-\item Exploit with tweakable injection based on known parameters.
-\item Avoid the reverse engineering.
-\end{itemize}
-
-\end{itemize}
-
-
-}
-
-\section{Conclusion}
-
 \frame
 {
 \frametitle{Conclusion}
 
 \begin{itemize}
 \setlength{\itemsep}{12pt}
-\item Security notions and definition for \textcolor{red}{precisely} analyze white-box cryptography are at very beginning.
+\item Security notions and definitions for white-box cryptography still need precise analysis.
 
-\item Key protection definitions might not suitable in practice for non-key white-box applications, e.g., secure multi-party computation.
+\item Only key extraction might not suitable for some applications, e.g., MACs and signatures.
 
 \item A secure white-box cryptography does not imply the white-box security of a secrecy system based on it.
 \end{itemize}
