@@ -24,7 +24,7 @@
 \section{White-box cryptography: background}
 \frame{
 \frametitle{Cryptography: the very beginning}
-"Information theory is about communication in the presence of noise."
+``Information theory is about communication in the presence of noise."
 \begin{flushright}
 -C. Shannon, 1948.\footnote{\scriptsize{\url{http://fab.cba.mit.edu/classes/S62.12/docs/Shannon_noise.pdf}}}
 \end{flushright}
@@ -45,7 +45,7 @@
 
 \frame{
 \frametitle{Cryptography: an informal definition}
-"Cryptography is about communication in the presence of adversaries."
+``Cryptography is about communication in the presence of adversaries."
 \begin{flushright}
 -R. Rivest
 \end{flushright}
@@ -100,29 +100,6 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 \end{columns}
 }
 
-%\frame{
-%\frametitle{The Kerckhoffs' principle of a secrecy system}
-%A cipher should be secure when the enemy cryptanalyst knows all details of the enciphering process and deciphering process except for the value of the secret key.
-%
-%\begin{flushright}
-%- stated in 1881 by the Dutchman Auguste Kerckhoffs (1835-1903).
-%\end{flushright}
-%
-%
-%\begin{center}
-%\begin{tikzpicture}
-%    \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=6cm, height=4cm]{./pics/Kerckhoffs.jpg}};
-%
-%    %\begin{scope}[x={(image.south east)},y={(image.north west)}]
-%        %\draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
-%        %\foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
-%        %\foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }
-%        %\draw[green, ultra thick, rounded corners] (0.24,0.18) rectangle (0.50,0.32);
-%    %\end{scope}
-%\end{tikzpicture}
-%\end{center}
-%}
-
 \frame{
 \frametitle{The goal of modern cryptography}
 \begin{itemize}
@@ -132,13 +109,14 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 \item Confidentiality / Secrecy
 \item Integrity
 \item Authenticity
-\item Availability
+\item \textcolor{red}{Availability}
 \end{itemize}
 
-\item Thus provable security must be reduced on \textcolor{red}{an acceptable model!}
+\item Thus security must be reduced on \textcolor{red}{an acceptable model!}
 \begin{itemize}
 \item Ideal cipher model
 \item Random oracle model/Standard model
+\item Indistinguishability model
 \item Indifferentiability model
 \end{itemize}
 \end{itemize}
@@ -166,7 +144,7 @@ A cipher should be secure when the enemy cryptanalyst knows all details of the e
 \frame{
 \frametitle{Black-box model}
 \begin{itemize}
-\item The adversary is able to know, choose or adaptively choose inputs and outputs of the function.
+\item The adversary is able to know, choose or adaptively choose inputs and obtain outputs.
 
 \item Given the black-box implementation of the function, the adversary aims to \textcolor{red}{recover the secret values} or to \textcolor{orange}{misbehave the function}.
 \end{itemize}
@@ -208,16 +186,6 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \end{center}
 }
 
-\frame
-{
-\frametitle{A typical white-box block cipher in a nutshell}
-\begin{figure}[htbp]
-\centering
-  \includegraphics[width=8cm]{./pics/WBCrypto_Functional_Model.png}
-
-\end{figure}
-
-}
 
 \frame
 {
@@ -272,6 +240,17 @@ According to the black/white-box modeling, the grey-box adversary is able to
  \end{itemize}
 }
 
+\frame
+{
+\frametitle{A typical white-box block cipher in a nutshell}
+\begin{figure}[htbp]
+\centering
+  \includegraphics[width=8cm]{./pics/WBCrypto_Functional_Model.png}
+
+\end{figure}
+
+}
+
 \subsection{The proposed security notions and their problems}
 %
 %\frame{
@@ -285,20 +264,11 @@ According to the black/white-box modeling, the grey-box adversary is able to
 %\end{itemize}
 %}
 
-\frame{
-\frametitle{Basic security definitions for WBC}
-\begin{definition}(\textcolor{red}{Secret key recovery (KR-Security)}). A white-box implementation of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{KR-insecure} if an attacker extracts the secret key $k$ and furthermore has access to the plaintext $P$.
-\end{definition}
-
-\begin{definition}
-(\textcolor{red}{White-box key recovery (WBKR-Security)}). A white-box implementation of an encoded version of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{WBKR-insecure} if the attacker extracts the secret key $k$ and the inverse mappings of the applied external encodings.
-\end{definition}
-}
 
 \frame{
 \frametitle{Basic security definitions for WBC (Chow \textit{et al.})}
 \begin{itemize}
-\item In SAC 2002, the security notions have  been informally described for white-box cryptography by Chow \textit{et al.}. First the key recovery problem is informally defined by \textcolor{red}{the weak white-box security} (which equals to \textcolor{red}{KR-Security})
+\item In SAC 2002, the security notions have  been informally described for white-box cryptography by Chow \textit{et al.}. First the key recovery problem is informally defined by \textcolor{red}{the weak white-box security} .
 \end{itemize}
 
 \begin{center}
@@ -316,9 +286,19 @@ According to the black/white-box modeling, the grey-box adversary is able to
 }
 
 \frame{
+\frametitle{Basic security definitions for WBC}
+\begin{definition}(\textcolor{red}{Secret key recovery (KR-Security)}). A white-box implementation of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{KR-insecure} if an attacker extracts the secret key $k$ and furthermore has access to the plaintext $P$.
+\end{definition}
+
+\begin{definition}
+(\textcolor{red}{White-box key recovery (WBKR-Security)}). A white-box implementation of an encoded version of a key-instantiated block cipher $E_{k}$ (or $D_{k}$) is called \textit{WBKR-insecure} if the attacker extracts the secret key $k$ and the inverse mappings of the applied external encodings.
+\end{definition}
+}
+
+\frame{
 \frametitle{Basic security definitions for WBC (Biryukov \textit{et al.})}
 \begin{itemize}
-\item For more general security, \textcolor{red}{the strong white-box security} has been defined by [Biryukov \textit{et al.} 2014] (which connects to \textcolor{red}{KR/WBKR-Security})
+\item For more general security, \textcolor{red}{the strong white-box security} has been defined by [Biryukov \textit{et al.} 2014] (which connects to \textcolor{red}{KR/WBKR-Security}).
 \end{itemize}
 
 \begin{center}
@@ -339,9 +319,9 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \frame{
 \frametitle{The problems of the weak/strong white-box security}
 \begin{itemize}
-\item It only works for white-box encryption/decryption, while does not suitable for \textcolor{red}{MAC/signature}.
+\item It only works for white-box encryption/decryption, while does not suitable for \textcolor{red}{MAC/signature}.\newline
 
-\item ``A \textcolor{red}{compact} description of $E_{k}$/$/D_{k}$", it is very hard to measure security under this informal definition.
+\item ``A \textcolor{red}{compact} description of $E_{k}$/$/D_{k}$", it is very hard to measure under this informal definition.
 \end{itemize}
 }
 
@@ -350,7 +330,7 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \begin{itemize}
 \item At Crypto 2001, Barak \textit{et al.} provided an insight on the impossibility of code obfuscation for \textcolor{red}{generic programs}.
 \item \textcolor{red}{The virtual black-box property (VBBP)} has been proposed for defining the ideal code/program obfuscation.
-\item The negative results are given by counterexamples that cannot satisfy the virtual black-box property (VBBP) in any circumstance.
+\item The negative results are given by counter-examples that cannot satisfy the virtual black-box property (VBBP) in any circumstance.
 \end{itemize}
 }
 
@@ -386,7 +366,7 @@ According to the black/white-box modeling, the grey-box adversary is able to
 
 \end{itemize}
 
-[Saxena 2009] noted that \textit{Predicate VBBP(pvbbp)} is too weak for practice, on the other hand \textit{Indistinguishability} is too strong to be achievable.
+[Saxena 2009] noted that \textit{Predicate VBBP(pvbbp)} is too weak for practice, whilst \textit{Indistinguishability} is too strong to be achievable.
 }
 
 \frame{
@@ -407,9 +387,9 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \begin{enumerate}
 \item Encryption: $E[k]:(m, r) \mapsto (H(\hat{e}(\textcolor{red}{k}^{r}, g)\oplus m), g^{r}) \mapsto (c_{1}, c_{2})$
 
-\item Decryption:$D[k]: (c_{1}, c_{2}) \mapsto H(\hat{e}(c_{2}, k))\oplus c_{1} \mapsto m$
+\item Decryption:$D[k]: (c_{1}, c_{2}) \mapsto H(\hat{e}(c_{2}, \textcolor{red}{k}))\oplus c_{1} \mapsto m$
 
-\item White-box encryption: Let $y = \textcolor{red}{\hat{e}(k, g)}$, $\mathcal{O}(E[k]): (m, r) \mapsto (H( \textcolor{red}{y}^{r}) \oplus m, g^{r}) \mapsto (c_{1}, c_{2})$\newline
+\item White-box encryption: Let $\textcolor{red}{y} = \textcolor{red}{\hat{e}(k, g)}$, $\mathcal{O}(E[k]): (m, r) \mapsto (H( \textcolor{red}{y}^{r}) \oplus m, g^{r}) \mapsto (c_{1}, c_{2})$\newline
 
 \end{enumerate}
 
@@ -418,7 +398,7 @@ The problem:
 \begin{itemize}
 \item only CPA-security, to achieve CCA-Security requires MAC on message. (\textcolor{red}{which means another authenticated key!})
 
-\item Black-box security can be reduced to the discrete logarithm problem (\textcolor{red}{$k^{r}$}), whilst white-box security is the pairing inversion problem. ($y = \hat{e}(\textcolor{red}{k}, g)$)
+\item Black-box security can be reduced to the discrete logarithm problem (\textcolor{red}{$k^{r}$}), whilst white-box security is the pairing inversion problem. ($\textcolor{red}{y} = \hat{e}(\textcolor{red}{k}, g)$)
 \end{itemize}
 }
 
@@ -427,7 +407,7 @@ The problem:
 
 \frame{
 \frametitle{Chow \textit{et al.}'s White-box metrics}
-[CEJO2002] introduced a few metrics that try to measure the achieved level of white-box security for LUT-based implementations.
+[CEJO2002] introduced a few metrics that try to measure the achieved level of white-box security for CEJO-framework.
 \begin{itemize}
 \item \textcolor{red}{White-box diversity}: how many distinct ways a particular unencoded LUT can be encoded. For key-dependent LUTs, the variation of the embedded key-material needs to be considered.
 \[\mathcal{T'} = g \circ T \circ f, \textmd{WB-div}=\#g \times \#T \times \#f \]
@@ -442,9 +422,9 @@ The problem:
 \frame{
 \frametitle{The problems of Chow \textit{et al.}'s White-box metrics}
 \begin{itemize}
-\item White-box diversity/ambiguity and local security cannot imply to KR/WBKR-security.
+\item White-box diversity/ambiguity and local security cannot imply to KR/WBKR-security.\newline
 
-\item The increase number of white-box diversity/ambiguity cannot be related to the achieved security level.
+\item The increase number of white-box diversity/ambiguity cannot be related to the achieved security level.\newline
 
 \item It is very hard to accurately count white-box diversity/ambiguity due to the bijection restriction.
 
@@ -479,7 +459,6 @@ For the application in which a white-box implementation is deployed, [Delerabl$\
 \item Traceability: make a white-box implementation traceable.
 
 \end{itemize}
-
 }
 
 \frame{
@@ -539,7 +518,7 @@ In Asiacrypt 2016, Bogdanov and Isobe proposed \textcolor{red}{SPNBox}, which ca
 {
 \frametitle{The problems of Space-hard ciphers}
 \begin{itemize}
-\item \textcolor{red}{Performance}: The costs of LUTs and computation are higher than CEJO-like constructions.\newline
+\item \textcolor{red}{Performance}: The costs of LUTs and computation are higher than CEJO-like constructions.
 
 \item \textcolor{red}{Weak WBC}: only achieves the weak white-box security (add encodings might be helpful but even worse on performance).
 
@@ -583,12 +562,16 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 \subsection{Adaptive SCA model}
 
 \frame{
-\frametitle{SCA Model on WBC}
+\frametitle{SCA model on WBC}
 In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techniques under grey-box model.
 \begin{itemize}
 \item Using SCA techniques can \textcolor{red}{avoid the reverse engineering work}, which always be time-costly in practice.
 
-\item For a WBC implementation, DCA/DFA exploits the first and the last rounds respectively.
+\item For a WBC implementation, 
+\begin{itemize}
+\item Differential computation analysis (DCA) focuses on the inputs and outputs of the first round;
+\item Differential fault analysis (DFA) exploits the faulty inputs and outputs of the last (diffusion) round.
+\end{itemize}
 \end{itemize}
 }
 
@@ -596,16 +579,16 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 {
 	\frametitle{Revisiting DFA/DCA and their countermeasures}
 	\begin{itemize}
-		\item DFA
+		\item DFA:
         \begin{enumerate}
         \item Getting a fault-free ciphertext.
 	    \item Injecting the faults and collecting the faulty ciphertexts.
-	    \item Building a model and performing an analysis between the fault-free and faulty ciphertexts to find the key by solving equations.
+	    \item Building a model and performing analysis between the fault-free and faulty ciphertexts to exploit the key.
         \end{enumerate}
-        \item DCA
+        \item DCA:
         \begin{enumerate}
-	    \item The software counterpart of the Differential Power Analysis attack. 
-	    \item Instead of physical measurements, DCA employs instrumentation tools like Valgrind, or PIN to capture the  memory traces.
+	    \item The software counterpart of the Differential Power Analysis. 
+	    \item Instead of physical measurements, it employs instrumentation tools to capture the memory traces.
 	    \item A statistical analysis between the collected traces and the prediction of a key-dependent intermediate value.
         \end{enumerate}
     \end{itemize}
@@ -619,10 +602,10 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 
 \frame
 {
-	\frametitle{The Adaptive Side-Channel Analysis Model on WBC}
+	\frametitle{The adaptive side-channel analysis model on WBC}
 	Although some improved white-box schemes can prevent the generalized SCA attacks (e.g., DFA and DCA), a white-box adversary can combine the powerful ability in the \textit{white-box context} with the technique of well-studied SCA attacks.
 	\\[2ex]
-	An \textbf{Adaptive Side-Channel Analysis} is an SCA attack scenario in which the attacker has the ability
+	An \textbf{Adaptive side-channel analysis} is an SCA attack scenario in which the attacker has the ability
 	to make her choice of the inputs to the cryptographic function based on the previous chosen plaintexts queries and their corresponding intermediates.
 }
 
@@ -647,11 +630,11 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 }
 
 
-\subsection{Adaptive DCA on Improved Masking WBAES}
+\subsection{Adaptive DCA on improved masking WBAES}
 
 \frame
 {
-	\frametitle{Improved Masking Method for Protecting Against DCA}
+	\frametitle{Lee \textit{et al.} improved masking method against DCA}
 	Improved masking method [Lee \textit{et al.} 2020] applies the masking technique to the key-dependent intermediate value. Such scheme adds the random masks on the $Ty_i$ outputs and encodes the masked values and the masks used.
 	\\[2ex]
 	The unmasking is designed to combine with input decoding of the second round.
@@ -980,23 +963,23 @@ Since the secret values are the most important in the white-box security model. 
 \end{itemize}
 }
 
-\frame{
-\frametitle{}
-For symmetric-key algorithms, they might be used for message authentication, data encryption/decryption and pseudorandom number generating. According to these different usages, the security requirements for the implementations of those cryptographic algorithms are diverse. Considering this diversity, we define a practical security notion for white-box cryptography as follows.
+%\frame{
+%\frametitle{}
+%For symmetric-key algorithms, they might be used for message authentication, data encryption/decryption and pseudorandom number generating. According to these different usages, the security requirements for the implementations of those cryptographic algorithms are diverse. Considering this diversity, we define a practical security notion for white-box cryptography as follows.
 
-\begin{itemize}
-\item \textbf{Key integrity.}
+%\begin{itemize}
+%\item \textbf{Key integrity.}
 
-\item \textbf{Key confidentiality.}
+%\item \textbf{Key confidentiality.}
 
-\item \textbf{Key equivalence.}
-\end{itemize}
+%\item \textbf{Key equivalence.}
+%\end{itemize}
 
-}
+%}
 
 \frame
 {
-\frametitle{Conclusion}
+\frametitle{Our considerations}
 
 \begin{itemize}
 \setlength{\itemsep}{12pt}
