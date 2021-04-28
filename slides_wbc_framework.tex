@@ -581,29 +581,36 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 
 \section{Adaptive SCA model and its applications}
 \subsection{Adaptive SCA model}
-%\frame{
-%\frametitle{}
-%Based on the above security properties that white-box cryptography could provide, one can build up secure applications enjoys the white-box security. From the life-cycle of secret keys, we depict the typical usages of the white-box cryptography in the following ways.
-
-%\begin{itemize}
-%\item \textbf{Key distribution.} Normally, the applications need a secure channel to distribute the secret keys between server and client. Although some key distribution schemes can be executed under authenticated channel, but most of them still need the support of certification services (Such as PKI, PKG, etc.). Because the white-box cryptography protects the secret keys from the adversary, the distribution of the keys only requires authenticated channel. If
-
-%\item \textbf{Local key management.}
-
-%\item \textbf{Dynamic key updating.}
-
-%\item \textbf{Key revocation.}
-%\end{itemize}
-%}
 
 \frame{
 \frametitle{SCA Model on WBC}
+In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techniques under grey-box model.
+\begin{itemize}
+\item Using SCA techniques can \textcolor{red}{avoid the reverse engineering work}, which always be time-costly in practice.
 
+\item For a WBC implementation, DCA/DFA exploits the first and the last rounds respectively.
+\end{itemize}
 }
 
 \frame
 {
-	\frametitle{Revisiting the Countermeasures of DFA/DCA }
+	\frametitle{Revisiting DFA/DCA and their countermeasures}
+	\begin{itemize}
+		\item DFA
+        \begin{enumerate}
+        \item Getting a fault-free ciphertext.
+	    \item Injecting the faults and collecting the faulty ciphertexts.
+	    \item Building a model and performing an analysis between the fault-free and faulty ciphertexts to find the key by solving equations.
+        \end{enumerate}
+        \item DCA
+        \begin{enumerate}
+	    \item The software counterpart of the Differential Power Analysis attack. 
+	    \item Instead of physical measurements, DCA employs instrumentation tools like Valgrind, or PIN to capture the  memory traces.
+	    \item A statistical analysis between the collected traces and the prediction of a key-dependent intermediate value.
+        \end{enumerate}
+    \end{itemize}
+
+    Their countermeasures:   
 	\begin{itemize}
 		\item The obfuscation and the runtime protections (e.g., the desynchronization, virtual machine, dummies, and duplicates).
 		\item The well-known SCA countermeasures (e.g., redundancy, masking, and shuffling).
@@ -616,33 +623,8 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 	Although some improved white-box schemes can prevent the generalized SCA attacks (e.g., DFA and DCA), a white-box adversary can combine the powerful ability in the \textit{white-box context} with the technique of well-studied SCA attacks.
 	\\[2ex]
 	An \textbf{Adaptive Side-Channel Analysis} is an SCA attack scenario in which the attacker has the ability
-	to make her choice of the inputs to the cryptographic
-	function based on the previous chosen plaintexts queries and their corresponding intermediates.
+	to make her choice of the inputs to the cryptographic function based on the previous chosen plaintexts queries and their corresponding intermediates.
 }
-
-%\frame
-%{
-%\frametitle{Adaptive DFA/DCA model}
-%\begin{itemize}
-%\setlength{\itemsep}{12pt}
-%\item The proposed DFA/DCA techniques are mainly in grey-box model.
-%\begin{itemize}
-%\setlength{\itemsep}{12pt}
-%\item The grey-box adversary does not know the details of WBC implementation.
-%\item Normally exploit with blind injection.
-%\item Some papers use reverse-engineering at first.
-%\end{itemize}
-
-%\item We assume a \textcolor{red}{adaptive SCA model}.
-%\begin{itemize}
-%\setlength{\itemsep}{12pt}
-%\item The greywhite-box adversary still does not know the details of WBC implementation, but might know some parameters, e.g., rounds, sbox sizes.
-%\item Exploit with tweakable injection based on known parameters.
-%\item Avoid the reverse engineering.
-%\end{itemize}
-
-%\end{itemize}
-%}
 
 \frame
 {
@@ -660,126 +642,10 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 	\begin{itemize}
 		\item The adversary de-obfuscates the white-box implementation with reverse engineering effort and therefore exposes the intellectual property.
 		\item The adversary collects the target inputs/plaintexts by analyzing the intermediate values of the pinpointed sub-function.
-		\item The adversary mounts the generalized SCA attacks on the white-box implementation with the chosen inputs/plaintexts.
+		\item The adversary mounts SCA attacks on the white-box implementation with the chosen inputs/plaintexts.
 	\end{itemize}
 }
 
-\subsection{Adaptive DFA on Table Redundancy WBAES}
-\frame
-{
-	\frametitle{Table Redundancy Method for Protecting Against DFA}
-	In 2019, Lee \textit{et al.} [eprint 2019/959] prorosed a table redundancy scheme based on Chow \textit{et al.}'s white-box AES for protecting against DFA.
-	\\[2ex]
-	Table redundancy method uses multiple branches of look-up tables for the target rounds (Round 7, 8, and 9) and xor the output to detect the modification.
-}
-
-\frame
-{
-	\frametitle{Different types of LUTs in Chow \textit{et al.}'s WBAES}
-	\begin{figure}
-		\centering
-		\begin{minipage}[b]{0.3\textwidth}
-			%\centering
-			\includegraphics[width=3cm]{./pics/TMC.png}
-			\caption{Type II: key-dependent T-boxes/$Ty_i$ table}
-		\end{minipage}%
-		\hspace{0.04\textwidth}%
-		\begin{minipage}[b]{0.3\textwidth}
-			%\centering
-			\includegraphics[width=3cm]{./pics/type3.png}
-			\caption{Type III: compatibility of encodings
-				between consecutive rounds}
-		\end{minipage}
-		\hspace{0.04\textwidth}%
-		\begin{minipage}[b]{0.2\textwidth}
-			%\centering
-			\includegraphics[width=2.7cm]{./pics/type4.png}
-			\caption{Type IV: encoded nibble XOR table}
-		\end{minipage}
-	\end{figure}
-}
-
-\frame
-{
-	\begin{figure}
-		\centering
-		\includegraphics[width=5cm]{./pics/type234.png}
-		\caption{An overview of \textit{TypeII}, \textit{TypeIII} and \textit{TypeIV} table lookups.}
-	\end{figure}
-}
-
-\frame
-{
-	\frametitle{Techniques of Table Redundancy Scheme}
-	The distribution of the two redundant computations can be shown as four parts as follows.
-	\begin{itemize}
-		\item Sharing the look-up tables from Round 1 to 6.
-		\item Transforming independently in parallel with two sets of look-up tables from Round 7 to \textit{TypeII} in Round 9.
-		\item XOR (by a type of \textit{TypeIV}) the output of two redundant computations.
-		\item Sharing the look-up tables from 9-th \textit{TypeIV\_II} to Round 10.
-	\end{itemize}
-}
-
-\frame
-{
-	\begin{figure}
-		\centering
-		\includegraphics[width=8cm]{./pics/TRS1.pdf}
-		\caption{The lookup sequence of table redundant scheme.}
-	\end{figure}
-}
-
-\frame
-{
-	\begin{itemize}
-		\item $MB_{l},\ MB_{r} \in \mathbb{F}_{2}^{32\times 32}$, the left and right 32-bit linear encoding.
-		\item $x_{l},\ x_{r} \in \mathbb{F}_{2}^{32}$, the underlying state of 9-th \textit{TypeII} output.
-	\end{itemize}
-	The XOR phase can be shown as 
-	\[MB_{l}\cdot x_{l} \oplus MB_{r}\cdot x_{r} = (MB_{l} \oplus MB_{r}) \cdot x,\ iff\ x_{l} = x_{r} = x.\]
-	\\[2ex]
-	The inverse Mixing Bijection $MB^{-1} \in \mathbb{F}_{2}^{32\times 32}$ in 9-th \textit{TypeIII} can be depicted as \[MB^{-1} = (MB_{l} \oplus MB_{r})^{-1}.\]
-}
-
-\frame
-{
-	\frametitle{Adaptive DFA against Table Redundancy Method}
-	\begin{itemize}
-		\item $y_{l}, y_{r} \in \mathbb{F}_{2}^{8}$, an 8-bit input value of the two 9-th \textit{TypeII} respectively.
-		\item $x \in \mathbb{F}_{2}^{8}$, an 8-bit underlying state of $y_{l}$ and $y_{r}$.
-		\item $P_{l}, P_{r} \in \mathbb{F}_{2}^{8}$, an 8-bit input decoding.
-	\end{itemize}
-	For the decoding process of 9-th round input, we have
-	\[x = P_{l}(y_{l}) = P_{r}(y_{r}).\]
-}
-
-\frame
-{
-	\begin{figure}
-		\centering
-		\includegraphics[width=8cm]{./pics/TRS2.pdf}
-		\caption{The 9-th round input in the lookup sequence of table redundant scheme.}
-	\end{figure}
-}
-
-\frame
-{
-	Since $x$ take 256 different values, the 256 pairs of each ($y_{l},y_{r}$) can be collected. 
-	\\[2ex]
-	Let $\mathcal{T}$ be a set of pairs values, such that
-	\[\mathcal{T}=\{(y_{l},y_{r})\ |\ y_{l} \in \mathbb{F}_{2}^{8},\ y_{r} \in \mathbb{F}_{2}^{8}\}\ with\ \#\mathcal{T}=256.\]
-}
-
-\frame
-{
-	The injection on the entry of the 9-th round can be concluded by the following steps.
-	\begin{itemize}
-		\item Collecting the pairs values of $\mathcal{T}$ by repeatedly running the cryptographic program with random plaintexts.
-		\item Getting a fault-free cipertext with a chosen plaintext $P$.
-		\item Replacing the ($y_{l},y_{r}$) with other pairs in $\mathcal{T}_{i}\backslash(y_{l},y_{r})$ and collecting the faulty ciphertexts by repeatedly running the cryptographic program with $P$.
-		\item Using the 9-th round byte-fault model to perform the analysis between the fault-free and faulty ciphertexts.
-	\end{itemize}
-}
 
 \subsection{Adaptive DCA on Improved Masking WBAES}
 
@@ -811,6 +677,16 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 		\includegraphics[width=3.0cm]{./pics/IIMIMO.pdf}
 		\caption{\textit{TypeII\_MIMO} table.}
 	\end{figure}
+}
+
+\frame
+{
+	\frametitle{DCA on Improved Masking Method}
+	DCA fails to analyze the correlation between intermediate and hypothesis values.
+	\begin{itemize}
+		\item The mask is selected uniformly at random, and is independent with the input and key.
+		\item The intermediates in the first round are all masked, and the unmasking is combined with the input decoding phase of the LUT in the second round.
+	\end{itemize}
 }
 
 \frame
@@ -895,6 +771,197 @@ In Asiacrypt 2020 and CHES 2020, Bock \textit{et al.} proposed a white-box secur
 		where $k'_0$ and $k'_1$ are key guess.
 		\item Mounting the DCA attack on analyzing the correlation between $\upsilon$ and $b$ to recover $k_0$ and $k_1$.
 	\end{itemize}
+}
+
+\frame
+{ 
+	\frametitle{Work Factor of Adaptive DCA on Improved Masking}
+	After the reverse engineering, the experimental results show that, 
+	\begin{enumerate}[1.]
+		\item at least about 3,265 times can recover four 2-byte subkeys of the first round,
+		\item totally at least about 6,530 times encryption can extract the 16-byte first-round key.
+	\end{enumerate}
+}
+
+\subsection{Adaptive DFA on Table Redundancy WBAES}
+\frame
+{
+	\frametitle{Table Redundancy Method for Protecting Against DFA}
+	In 2019, Lee \textit{et al.} [eprint 2019/959] prorosed a table redundancy scheme based on Chow \textit{et al.}'s white-box AES for protecting against DFA.
+	\\[2ex]
+	Table redundancy method uses multiple branches of look-up tables for the target rounds (Round 7, 8, and 9) and xor the output to detect the modification.
+}
+
+\frame
+{
+	\frametitle{Different types of LUTs in Chow \textit{et al.}'s WBAES}
+	\begin{figure}
+		\centering
+		\begin{minipage}[b]{0.3\textwidth}
+			%\centering
+			\includegraphics[width=3cm]{./pics/TMC.png}
+			\caption{Type II: key-dependent T-boxes/$Ty_i$ table}
+		\end{minipage}%
+		\hspace{0.04\textwidth}%
+		\begin{minipage}[b]{0.3\textwidth}
+			%\centering
+			\includegraphics[width=3cm]{./pics/type3.png}
+			\caption{Type III: compatibility of encodings
+				between consecutive rounds}
+		\end{minipage}
+		\hspace{0.04\textwidth}%
+		\begin{minipage}[b]{0.2\textwidth}
+			%\centering
+			\includegraphics[width=2.7cm]{./pics/type4.png}
+			\caption{Type IV: encoded nibble XOR table}
+		\end{minipage}
+	\end{figure}
+}
+
+\frame
+{
+	\begin{figure}
+		\centering
+		\includegraphics[width=5cm]{./pics/type234.png}
+		\caption{An overview of \textit{TypeII}, \textit{TypeIII} and \textit{TypeIV} table lookups.}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Table redundancy protection}
+	The distribution of the redundant computation can be shown as four parts as follows.
+	\begin{itemize}
+		\item Sharing the look-up tables from Round 1 to 6.
+		\item Transforming independently in parallel with two sets of look-up tables from Round 7 to \textit{TypeII} in Round 9.
+		\item XOR (by a type of \textit{TypeIV}) the output of two redundant computations.
+		\item Sharing the look-up tables from 9-th \textit{TypeIV\_II} to Round 10.
+	\end{itemize}
+}
+
+\frame
+{
+	\begin{figure}
+		\centering
+		\includegraphics[width=8cm]{./pics/TRS1.pdf}
+		\caption{The lookup sequence of table redundant scheme.}
+	\end{figure}
+}
+
+\frame
+{
+	\begin{itemize}
+		\item $MB_{l},\ MB_{r} \in \mathbb{F}_{2}^{32\times 32}$, the left and right 32-bit linear encoding.
+		\item $x_{l},\ x_{r} \in \mathbb{F}_{2}^{32}$, the underlying state of 9-th \textit{TypeII} output.
+	\end{itemize}
+	The XOR phase can be shown as 
+	\[MB_{l}\cdot x_{l} \oplus MB_{r}\cdot x_{r} = (MB_{l} \oplus MB_{r}) \cdot x,\ iff\ x_{l} = x_{r} = x.\]
+	\\[2ex]
+	The inverse Mixing Bijection $MB^{-1} \in \mathbb{F}_{2}^{32\times 32}$ in 9-th \textit{TypeIII} can be depicted as \[MB^{-1} = (MB_{l} \oplus MB_{r})^{-1}.\]
+}
+\frame{
+	\frametitle{The 9-th round byte-fault model}
+	\begin{columns}
+		\column{.4\textwidth}
+		\begin{figure}
+			\centering
+			% Requires \usepackage{graphicx}
+			\includegraphics[width=4.5cm]{./pics/DFA_on_AES_1.png}
+			\caption{The 9-th round faulty model of AES.}
+		\end{figure}
+		\column{.6\textwidth}
+		\begin{itemize}
+		\item $C_i$, fault-free ciphertexts.
+		\item $C_i^{*}$, faulty ciphertexts.
+		\item $k_i^{*}$, key candidates.
+		\end{itemize}
+		\begin{eqnarray}
+		2\delta' = S^{-1}(C_{0}\oplus K_{0}^{*})\oplus S^{-1}(C_{0}^{*}\oplus K_{0}^{*}),\nonumber\\
+		\delta' = S^{-1}(C_{7}\oplus K_{7}^{*})\oplus S^{-1}(C_{7}^{*}\oplus K_{7}^{*}),\nonumber\\
+		\delta' = S^{-1}(C_{10}\oplus K_{10}^{*})\oplus S^{-1}(C_{10}^{*}\oplus K_{10}^{*}),\nonumber\\
+		3\delta' = S^{-1}(C_{13}\oplus K_{13}^{*})\oplus S^{-1}(C_{13}^{*}\oplus K_{13}^{*}).\nonumber
+		\end{eqnarray}
+	\end{columns}
+}
+
+\frame{
+	\frametitle{DFA on Table Redundancy Method}
+	\begin{itemize}
+		\item $x\in \mathbb{F}_{2}^{8}$, the fault-free unencoded state.
+		\item $x^{*}\in \mathbb{F}_{2}^{8}$, the faulty one.
+	\end{itemize}
+	The XOR phase now can be shown as 
+	\[\mathrm{MB}_{l}\cdot \mathrm{T/Ty_i}(x) \oplus \mathrm{MB}_{r}\cdot \mathrm{T/Ty_i}(x^{*}) \neq (\mathrm{MB}_{l} \oplus \mathrm{MB}_{r}) \cdot \mathrm{T/Ty_i}(x).\]
+	\\[2ex]
+	In this way, the decoding phase of $\mathrm{MB}$ cannot work in the following transformation and thus the faulty ciphertexts cannot be exploited for DFA attack.
+}
+
+\frame
+{
+	\frametitle{Adaptive DFA against Table Redundancy Method}
+	\begin{itemize}
+		\item $y_{l}, y_{r} \in \mathbb{F}_{2}^{8}$, an 8-bit input value of the two 9-th \textit{TypeII} respectively.
+		\item $x \in \mathbb{F}_{2}^{8}$, an 8-bit underlying state of $y_{l}$ and $y_{r}$.
+		\item $P_{l}, P_{r} \in \mathbb{F}_{2}^{8}$, an 8-bit input decoding.
+	\end{itemize}
+	For the decoding process of 9-th round input, we have
+	\[x = P_{l}(y_{l}) = P_{r}(y_{r}).\]
+}
+
+\frame
+{
+	\begin{figure}
+		\centering
+		\includegraphics[width=8cm]{./pics/TRS2.pdf}
+		\caption{The 9-th round input in the lookup sequence of table redundant scheme.}
+	\end{figure}
+}
+
+\frame
+{
+	Since $x$ take 256 different values, the 256 pairs of each ($y_{l},y_{r}$) can be collected. 
+	\\[2ex]
+	Let $\mathcal{T}$ be a set of pairs values, such that
+	\[\mathcal{T}=\{(y_{l},y_{r})\ |\ y_{l} \in \mathbb{F}_{2}^{8},\ y_{r} \in \mathbb{F}_{2}^{8}\}\ with\ \#\mathcal{T}=256.\]
+	\\[2ex]
+	Replacing the intermediate pairs ($y_{l},y_{r}$) with the other pairs in $\mathcal{T}$ can induce the faults at 9-th input.
+}
+
+\frame
+{
+	The injection on the entry of the 9-th round can be concluded by the following steps.
+	\begin{itemize}
+		\item Collecting the pairs values of $\mathcal{T}$ by repeatedly running the cryptographic program with random plaintexts.
+		\item Getting a fault-free cipertext with a chosen plaintext $P$.
+		\item Replacing the ($y_{l},y_{r}$) with other pairs in $\mathcal{T}\backslash(y_{l},y_{r})$ and collecting the faulty ciphertexts by repeatedly running the cryptographic program with $P$.
+		\item Using the 9-th round byte-fault model to perform the analysis between the fault-free and faulty ciphertexts.
+	\end{itemize}
+}
+
+
+
+
+\subsection{Open problem: Adaptive DCA on the CHES 2021 Proposal}
+\frame
+{ 
+	\frametitle{Adaptive DCA on the CHES 2021 Proposal}
+	In CHES 2021, Seker \textit{et al.} proposed a masking scheme for resisting DCA and Algebraic DCA attacks.
+	\\[2ex]
+	\begin{itemize}
+		\item $\tilde{x}_0,...,\tilde{x}_d,x_1,...,x_n$, shares of sensitive variable $x$.
+		\item Making: $x=\prod_{j=0}^{d}\tilde{x}_j\oplus \sum_{i=1}^{n}x_i$.
+	\end{itemize}
+}
+\frame
+{ 
+	Note that,
+	\[Pr(\prod_{j=0}^{d}\tilde{x}_j=0)=1-(\frac{1}{2})^{d+1}.\]
+	\\[2ex]
+	Hence, $x=\sum_{i=1}^{n}x_i$ with a high probability for the increasing $d$, there exists $n$ nodes that are linearly correlated with a predictable vector. 
+	\\[2ex]
+	An Adaptive DCA attacker can mount the higher-order DCA attack [Bogdanov \textit{et al.} 2019] directly on the circuit after the reverse engineering effort.
+	\\[2ex]
+	But how about decoding the key shares with the ability of a white-box attacker?
 }
 
 \section{Conclusion}
