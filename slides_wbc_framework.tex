@@ -372,9 +372,9 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \frame{
 \frametitle{Recall the definitions of VBBP [Saxena2009] (3)}
 
-\textbf{Soundness.}{$\mathcal{O}$ is sound if at least one of the following properties holds.}
+\textbf{Soundness.} {$\mathcal{O}$ is sound if at least one of the following properties holds.}
 \begin{enumerate}
-\item \textit{Predicate VBBP:}$\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
+\item \textit{Predicate VBBP:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{pvbbp} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{pvbbp}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge S^{Q[q]}(1^{k})\neq 1]|$.
 
 \item \textit{Indistinguishability:} $\forall A\in \mathbb{PPT}, \exists S \in \mathbb{PPT}: Adv_{A, S, \mathcal{O}, Q}^{ind} \leq negl(k)$, where \\ $Adv_{A, S, \mathcal{O}, Q}^{ind}(k) =|\textmd{Pr}_{q \xleftarrow{R} \mathcal{K}^{k}_{Q}}[A^{Q[q]}(1^{k},\mathcal{O}(Q,q))=1 \wedge A^{Q[q]}(1^{k}, S^{Q[q]}(1^{k}))\neq 1]|$.
 \end{enumerate}
@@ -387,7 +387,7 @@ According to the black/white-box modeling, the grey-box adversary is able to
 \begin{enumerate}
 \item Encryption: $E[k]:(m, r) \mapsto (H(\hat{e}(\textcolor{red}{k}^{r}, g)\oplus m), g^{r}) \mapsto (c_{1}, c_{2})$
 
-\item Decryption:$D[k]: (c_{1}, c_{2}) \mapsto H(\hat{e}(c_{2}, \textcolor{red}{k}))\oplus c_{1} \mapsto m$
+\item Decryption: $D[k]: (c_{1}, c_{2}) \mapsto H(\hat{e}(c_{2}, \textcolor{red}{k}))\oplus c_{1} \mapsto m$
 
 \item White-box encryption: Let $\textcolor{red}{y} = \textcolor{red}{\hat{e}(k, g)}$, $\mathcal{O}(E[k]): (m, r) \mapsto (H( \textcolor{red}{y}^{r}) \oplus m, g^{r}) \mapsto (c_{1}, c_{2})$\newline
 
@@ -396,7 +396,7 @@ According to the black/white-box modeling, the grey-box adversary is able to
 
 The problem:
 \begin{itemize}
-\item only CPA-security, to achieve CCA-Security requires MAC on message. (\textcolor{red}{which means another authenticated key!})
+\item Only CPA-security, to achieve CCA-Security requires MAC on message. (\textcolor{red}{which means another authenticated key!})
 
 \item Black-box security can be reduced to the discrete logarithm problem (\textcolor{red}{$k^{r}$}), whilst white-box security is the pairing inversion problem. ($\textcolor{red}{y} = \hat{e}(\textcolor{red}{k}, g)$)
 \end{itemize}
@@ -409,10 +409,10 @@ The problem:
 \frametitle{Chow \textit{et al.}'s White-box metrics}
 [CEJO2002] introduced a few metrics that try to measure the achieved level of white-box security for CEJO-framework.
 \begin{itemize}
-\item \textcolor{red}{White-box diversity}: how many distinct ways a particular unencoded LUT can be encoded. For key-dependent LUTs, the variation of the embedded key-material needs to be considered.
+\item \textcolor{red}{White-box diversity}: How many distinct ways a particular unencoded LUT can be encoded. For key-dependent LUTs, the variation of the embedded key-material needs to be considered.
 \[\mathcal{T'} = g \circ T \circ f, \textmd{WB-div}=\#g \times \#T \times \#f \]
 
-\item \textcolor{red}{White-box ambiguity}: how many distinct ways a specific encoded LUT can be interpreted.
+\item \textcolor{red}{White-box ambiguity}: How many distinct ways a specific encoded LUT can be interpreted.
 \[\textmd{WB-amb{T'} = \textmd{WB-div}(T')/\#T'}\]
 
 \item \textcolor{red}{Local security}: Indistinguishability on $\mathcal{T'}$ with different keys and encodings.
@@ -452,9 +452,9 @@ The problem:
 For the application in which a white-box implementation is deployed, [Delerabl$\acute{e}$e \textit{et al.} 2013] discussed the following security objectives.
 
 \begin{itemize}
-\item One-wayness: implies the strong white-box security
+\item One-wayness: implies the strong white-box security.
 
-\item Incompressibility: prevents the a functionally equivalent deduction \textcolor{red}{with a significantly smaller memory footprint}.
+\item Incompressibility: prevents a functionally equivalent deduction \textcolor{red}{with a significantly smaller memory footprint}.
 
 \item Traceability: make a white-box implementation traceable.
 
@@ -462,13 +462,13 @@ For the application in which a white-box implementation is deployed, [Delerabl$\
 }
 
 \frame{
-\frametitle{Space-hard ciphers:SPACE}
+\frametitle{Space-hard ciphers: SPACE}
 \begin{itemize}
 \item In CCS 2015, Bogdanov and Isobe proposed a family of white-box block cipher \textcolor{red}{SPACE} with several novel features.
 \begin{itemize}
 \item SPACE-hardness: The implementation of $E_{K}$ is $(M, Z)$-space hard if it is infeasible to en/decrypt any randomly drawn plain/ciphertext with probability of more than $2^{-Z}$ given any code (LUT) of size less than $M$.\newline
 
-\item Strong $(M, Z)-Space hardness$: existential possibility version of $(M, Z)-Space hardness$.
+\item Strong $(M, Z)-Space \ hardness$: existential possibility version of $(M, Z)-Space \ hardness$.
 \end{itemize}
 \end{itemize}
 
@@ -477,7 +477,7 @@ For the application in which a white-box implementation is deployed, [Delerabl$\
 }
 
 \frame{
-\frametitle{Space-hard ciphers:SPACE}
+\frametitle{Space-hard ciphers: SPACE}
 \begin{center}
 \begin{tikzpicture}
     \node[anchor=south west,inner sep=0] (image) at (0,0) { \includegraphics[width=8cm, height=5.5cm]{./pics/SPACE.png}};
@@ -496,7 +496,7 @@ For the application in which a white-box implementation is deployed, [Delerabl$\
 
 
 \frame{
-\frametitle{Space-hard ciphers:SPNBox}
+\frametitle{Space-hard ciphers: SPNBox}
 In Asiacrypt 2016, Bogdanov and Isobe proposed \textcolor{red}{SPNBox}, which can be looked as the SPN version of SPACE.
 \begin{center}
 \begin{tikzpicture}
@@ -689,7 +689,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 		\caption{The underlying mask $m$ of \textit{vs} and \textit{ms} is identical to each other.}
 	\end{figure}
 	
-	If the mask of different plaintexts is \textbf{constant}, the combination of the mask and linear encodings are converted into \textbf{an affine function}. Hence, the mask is fail to hide the correlation between the key-dependent output and  hypothetical value.
+	If the mask of different plaintexts is \textbf{constant}, the combination of the mask and linear encodings are converted into \textbf{an affine function}. Hence, the mask is fail to hide the correlation between the key-dependent output and hypothetical value.
 }
 
 
@@ -730,7 +730,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 	&\oplus mc_{i,2}\cdot S[x_2\oplus k_2]\oplus mc_{i,3}\cdot S[x_3\oplus k_3]\oplus M_i).
 	\end{aligned}
 	\]
-	The encoded output of mask table can be represent as follows.
+	The encoded output of mask table can be represented as follows.
 	\[y'_i(x_0,x_1,x_2,x_3)=Q'_i\circ(M_i),\]
 	where $M_i$ denotes the mask used, $mc_i$ denotes the \textbf{MixColumns} coefficient, $0\leq i\leq 3$ denote the byte index of the column.
 }
@@ -781,13 +781,13 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 	After the reverse engineering, the experimental results show that,
 	\begin{enumerate}[1.]
 		\item at least 25 plaintexts $(x_0,x_1,0,0)\in\mathcal{W}$ help to recover the 2-byte key $k_0$ and $k_1$,
-		\item nearly 3,240 times encryption can help to collect 25 elements in $\mathcal{W}$.
+		\item nearly 3,240 encryptions can help to collect 25 elements in $\mathcal{W}$.
 	\end{enumerate}
 	Such that,
 	\begin{enumerate}[1.]
-		\item at least about 3,265 times (3,240 times for obtaining $\mathcal{W}$
+		\item at least about 3,265 encryptions (3,240 times for obtaining $\mathcal{W}$
 		corresponding to four 4-byte plaintexts and 25 times for collecting computation) can recover four 2-byte subkeys of the first round,
-		\item totally at least about 6,530 times encryption can extract the 16-byte first-round key.
+		\item totally at least about 6,530 encryptions can extract the 16-byte first-round key.
 	\end{enumerate}
 }
 
@@ -795,7 +795,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 \frame
 {
 	\frametitle{Table redundancy method for protecting against DFA}
-	In 2019, Lee \textit{et al.} [eprint 2019/959] prorosed a table redundancy scheme based on Chow \textit{et al.}'s white-box AES for protecting against DFA.
+	In 2019, Lee \textit{et al.} [eprint 2019/959] proposed a table redundancy scheme based on Chow \textit{et al.}'s white-box AES for protecting against DFA.
 	\\[2ex]
 	Table redundancy method uses \textbf{multiple branches of LUTs} for the vulnerable rounds (Round 7, 8, and 9) and xor the output to detect the modification.
 }
@@ -928,7 +928,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 
 \frame
 {
-	Since $x$ takes 256 different values, the 256 pairs of each ($y_{l},y_{r}$) can be collected.
+	Since $x$ takes 256 different values and the encoding is a fixed bijection, the 256 pairs of each ($y_{l},y_{r}$) can be collected.
 	\\[2ex]
 	Let $\mathcal{T}$ be a set of pairs values, such that
 	\[\mathcal{T}=\{(y_{l},y_{r})\ |\ y_{l} \in \mathbb{F}_{2}^{8},\ y_{r} \in \mathbb{F}_{2}^{8}\}\ with\ \#\mathcal{T}=256.\]
@@ -950,7 +950,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 	The injection at the entry of the 9-th round can be concluded by the following steps.
 	\begin{itemize}
 		\item Collecting the pairs values of $\mathcal{T}$ by repeatedly running the cryptographic program with random plaintexts.
-		\item Getting a fault-free cipertext with a chosen plaintext $P$.
+		\item Getting a fault-free ciphertext with a chosen plaintext $P$.
 		\item Replacing the ($y_{l},y_{r}$) with other pairs in $\mathcal{T}\backslash(y_{l},y_{r})$ and collecting the faulty ciphertexts by repeatedly running the cryptographic program with $P$.
 		\item Using the 9-th round byte-fault model to perform the analysis between the fault-free and faulty ciphertexts.
 	\end{itemize}
@@ -962,7 +962,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 	After the reverse engineering, the experimental results show that,
 	\begin{enumerate}[1.]
 		\item at least 5 times encryption (3 times for collecting $\mathcal{T}$ and 2 times for the replacement of fault injection) can recover the 4-byte subkey (in a column) of the tenth round,
-		\item repeat the steps for the remain columns, such that totally at least about 20 times encryption can can extract the 16-byte tenth-round key.
+		\item repeat the steps for the remain columns, such that totally at least about 20 times encryption can extract the 16-byte tenth-round key.
 	\end{enumerate}
 }
 
@@ -1001,7 +1001,7 @@ Since the secret values are the most important in the white-box security model. 
 
 \item \textbf{Module level: Function integrity.}
 
-\item \textbf{System level: Code lifting}
+\item \textbf{System level: Code lifting.}
 
 \end{itemize}
 }
@@ -1028,8 +1028,8 @@ Since the secret values are the most important in the white-box security model. 
 \setlength{\itemsep}{12pt}
 \item Security notions and definitions for white-box cryptography still need precise analysis.
 \begin{itemize}
-\item how to make a unified security framework for DCA/DFA/BGE?
-\item how to find a protection method in such a unified framework?
+\item How to make a unified security framework for DCA/DFA/BGE?
+\item How to find a protection method in such a unified framework?
 \end{itemize}
 \item Only key extraction might not suitable for some applications, e.g., MACs and signatures.
 
