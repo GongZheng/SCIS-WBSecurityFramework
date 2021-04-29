@@ -567,7 +567,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 \begin{itemize}
 \item Using SCA techniques can \textcolor{red}{avoid the reverse engineering work}, which always be time-costly in practice.
 
-\item For a WBC implementation, 
+\item For a WBC implementation,
 \begin{itemize}
 \item Differential computation analysis (DCA) focuses on the inputs and outputs of the first round;
 \item Differential fault analysis (DFA) exploits the faulty inputs and outputs of the last (diffusion) round.
@@ -579,21 +579,20 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 {
 	\frametitle{Revisiting DFA/DCA and their countermeasures}
 	\begin{itemize}
-		\item DFA:
-        \begin{enumerate}
-        \item Getting a fault-free ciphertext.
-	    \item Injecting the faults and collecting the faulty ciphertexts.
+		\item DFA
+		\begin{itemize}
+		\item An analysis between the fault-free and faulty ciphertexts.
 	    \item Building a model and performing analysis between the fault-free and faulty ciphertexts to exploit the key.
-        \end{enumerate}
-        \item DCA:
-        \begin{enumerate}
-	    \item The software counterpart of the Differential Power Analysis. 
-	    \item Instead of physical measurements, it employs instrumentation tools to capture the memory traces.
-	    \item A statistical analysis between the collected traces and the prediction of a key-dependent intermediate value.
-        \end{enumerate}
-    \end{itemize}
 
-    Their countermeasures:   
+		\end{itemize}
+		\item DCA
+		\begin{itemize}
+			\item The software counterpart of the Differential Power Analysis with noise-free intermediate values.
+            \item Instead of physical measurements, it employs instrumentation tools to capture the memory traces.
+		\end{itemize}
+	\end{itemize}
+
+    Their countermeasures:
 	\begin{itemize}
 		\item The obfuscation and the runtime protections (e.g., the desynchronization, virtual machine, dummies, and duplicates).
 		\item The well-known SCA countermeasures (e.g., redundancy, masking, and shuffling).
@@ -613,10 +612,10 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 {
 	\frametitle{The abilities of adaptive SCA attacker}
 	\begin{itemize}
-		\item (For choosing plaintexts.) The adversary has in-depth reverse engineering and cryptographic skills to de-obfuscate the white-box implementation.
+		\item (For choosing inputs/plaintexts.) The adversary has in-depth reverse engineering and cryptographic skills to de-obfuscate the white-box implementation.
 		\item (For practical SCA attack.) The adversary is capable of the generalized SCA attacks (e.g., DFA and DCA) on the white-box implementation.
 	\end{itemize}
-	This is assumed that the adversary has the identical abilities to a white-box attacker when querying the cryptographic function for choosing inputs/plaintexts. E.g., the adversary can deconstruct step by step the algorithms and collect/tamper any intermediate values before the SCA attack.
+	This is assumed that the adversary has the identical abilities to a white-box attacker when querying the cryptographic function for choosing inputs/plaintexts. For example, the adversary can deconstruct step by step the algorithms and collect/modify certain intermediate values before the SCA attack.
 }
 
 \frame
@@ -635,7 +634,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 \frame
 {
 	\frametitle{Lee \textit{et al.} improved masking method against DCA}
-	Improved masking method [Lee \textit{et al.} 2020] applies the masking technique to the key-dependent intermediate value. Such scheme adds the random masks on the $Ty_i$ outputs and encodes the masked values and the masks used.
+	Improved masking method [Lee \textit{et al.} 2020] applies the masking technique to the key-dependent intermediate value. Such scheme adds the \textbf{random masks} on the $Ty_i$ outputs and encodes the masked values and the masks used.
 	\\[2ex]
 	The unmasking is designed to combine with input decoding of the second round.
 }
@@ -658,13 +657,23 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 	\begin{figure}
 		\centering
 		\includegraphics[width=3.0cm]{./pics/IIMIMO.pdf}
-		\caption{\textit{TypeII\_MIMO} table.}
+		\caption{Input decoding phase of \textit{TypeII\_MIMO} table, the following components of T-box are omitted.}
 	\end{figure}
 }
 
 \frame
 {
-	\frametitle{DCA on Improved Masking Method}
+	\frametitle{The data flow of improved masking scheme}
+	\begin{figure}
+		\centering
+		\includegraphics[width=8.5cm]{./pics/DCA_R12_1.pdf}
+		\caption{Lookup sequence from the first column in the first round to the first byte at the second round. (Solid line represents the data flow of masked values while the dotted line denotes the one of mask used.)}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{DCA on improved masking method}
 	DCA fails to analyze the correlation between intermediate and hypothesis values.
 	\begin{itemize}
 		\item The mask is selected uniformly at random, and is independent with the input and key.
@@ -674,7 +683,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 
 \frame
 {
-	\frametitle{Adaptive DCA against Improved Masking Method}
+	\frametitle{Adaptive DCA against improved masking method}
 	\begin{figure}
 		\centering
 		\includegraphics[width=3.5cm]{./pics/IIMIMO1.pdf}
@@ -687,7 +696,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 
 \frame
 {
-	\frametitle{Review the data flow of Improved Masking scheme}
+	\frametitle{Review the data flow of improved masking scheme}
 	\begin{figure}
 		\centering
 		\includegraphics[width=7cm]{./pics/DCA_R12.pdf}
@@ -729,10 +738,21 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 
 \frame
 {
-	Note that $x_0||x_1||x_2||x_3\ \in \mathbb{F}_{2}^{32}$, $M_i$ take all the values in $\mathbb{F}_{2}^{8}$. One can sort the inputs by the identical output $y'_i$ of mask table (e.g., get the input set $\mathcal{W}=\{x|y'(x)=c,x\in\mathbb{F}_{2}^{32}\}$, where $c$ is a constant).
+	Note that $x_0||x_1||x_2||x_3\ \in \mathbb{F}_{2}^{32}$, $M_i$ take all the values in $\mathbb{F}_{2}^{8}$. One can sort the inputs by the identical output $y'_i$ of mask table, i.e., to get the input set $\mathcal{W}=\{x|y'(x)=c,x\in\mathbb{F}_{2}^{32}\}$, where $c$ is a constant.
 	\\[2ex]
-	In this way, for any input $x\in S$, the mask used of $y(x)$ is a constant.
+	To reduce the key space, the random plaintext can be selected with fixed value for $x_2$ and $x_3$ (specifically $x_2$ = $x_3$ = 0).
+	\\[2ex]
+	In this way, for any input $x\in \mathcal{W}$, the mask used of $y(x)$ is a constant.
 	
+}
+
+\frame
+{
+	\begin{figure}
+		\centering
+		\includegraphics[width=11cm]{./pics/DCA_R12_2.pdf}
+		\caption{The chosen plaintexts phase of an adaptive DCA attack.}
+	\end{figure}
 }
 
 \frame
@@ -757,22 +777,28 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 }
 
 \frame
-{ 
-	\frametitle{Work Factor of Adaptive DCA on Improved Masking}
-	After the reverse engineering, the experimental results show that, 
+{
+	\frametitle{Work factor of adaptive DCA on improved masking}
+	After the reverse engineering, the experimental results show that,
 	\begin{enumerate}[1.]
-		\item at least about 3,265 times can recover four 2-byte subkeys of the first round,
+		\item at least 25 plaintexts $(x_0,x_1,0,0)\in\mathcal{W}$ help to recover the 2-byte key $k_0$ and $k_1$,
+		\item nearly 3,240 times encryption can help to collect 25 elements in $\mathcal{W}$.
+	\end{enumerate}
+	Such that,
+	\begin{enumerate}[1.]
+		\item at least about 3,265 times (3,240 times for obtaining $\mathcal{W}$
+		corresponding to four 4-byte plaintexts and 25 times for collecting computation) can recover four 2-byte subkeys of the first round,
 		\item totally at least about 6,530 times encryption can extract the 16-byte first-round key.
 	\end{enumerate}
 }
 
-\subsection{Adaptive DFA on Table Redundancy WBAES}
+\subsection{Adaptive DFA on table redundancy WBAES}
 \frame
 {
-	\frametitle{Table Redundancy Method for Protecting Against DFA}
+	\frametitle{Table redundancy method for protecting against DFA}
 	In 2019, Lee \textit{et al.} [eprint 2019/959] prorosed a table redundancy scheme based on Chow \textit{et al.}'s white-box AES for protecting against DFA.
 	\\[2ex]
-	Table redundancy method uses multiple branches of look-up tables for the target rounds (Round 7, 8, and 9) and xor the output to detect the modification.
+	Table redundancy method uses \textbf{multiple branches of LUTs} for the vulnerable rounds (Round 7, 8, and 9) and xor the output to detect the modification.
 }
 
 \frame
@@ -826,7 +852,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 {
 	\begin{figure}
 		\centering
-		\includegraphics[width=8cm]{./pics/TRS1.pdf}
+		\includegraphics[width=8.5cm]{./pics/TRS1.pdf}
 		\caption{The lookup sequence of table redundant scheme.}
 	\end{figure}
 }
@@ -837,7 +863,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 		\item $MB_{l},\ MB_{r} \in \mathbb{F}_{2}^{32\times 32}$, the left and right 32-bit linear encoding.
 		\item $x_{l},\ x_{r} \in \mathbb{F}_{2}^{32}$, the underlying state of 9-th \textit{TypeII} output.
 	\end{itemize}
-	The XOR phase can be shown as 
+	The XOR phase can be shown as
 	\[MB_{l}\cdot x_{l} \oplus MB_{r}\cdot x_{r} = (MB_{l} \oplus MB_{r}) \cdot x,\ iff\ x_{l} = x_{r} = x.\]
 	\\[2ex]
 	The inverse Mixing Bijection $MB^{-1} \in \mathbb{F}_{2}^{32\times 32}$ in 9-th \textit{TypeIII} can be depicted as \[MB^{-1} = (MB_{l} \oplus MB_{r})^{-1}.\]
@@ -850,13 +876,14 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 			\centering
 			% Requires \usepackage{graphicx}
 			\includegraphics[width=4.5cm]{./pics/DFA_on_AES_1.png}
-			\caption{The 9-th round faulty model of AES.}
+			\caption{The 9-th round faulty model of AES. (Injection between 8th and 9th MixColumns.)}
 		\end{figure}
 		\column{.6\textwidth}
 		\begin{itemize}
 		\item $C_i$, fault-free ciphertexts.
 		\item $C_i^{*}$, faulty ciphertexts.
 		\item $k_i^{*}$, key candidates.
+		\item 2 faults can recover 4-byte subkey.
 		\end{itemize}
 		\begin{eqnarray}
 		2\delta' = S^{-1}(C_{0}\oplus K_{0}^{*})\oplus S^{-1}(C_{0}^{*}\oplus K_{0}^{*}),\nonumber\\
@@ -868,20 +895,29 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 }
 
 \frame{
-	\frametitle{DFA on Table Redundancy Method}
+	\frametitle{DFA on table redundancy method}
 	\begin{itemize}
 		\item $x\in \mathbb{F}_{2}^{8}$, the fault-free unencoded state.
 		\item $x^{*}\in \mathbb{F}_{2}^{8}$, the faulty one.
 	\end{itemize}
-	The XOR phase now can be shown as 
-	\[\mathrm{MB}_{l}\cdot \mathrm{T/Ty_i}(x) \oplus \mathrm{MB}_{r}\cdot \mathrm{T/Ty_i}(x^{*}) \neq (\mathrm{MB}_{l} \oplus \mathrm{MB}_{r}) \cdot \mathrm{T/Ty_i}(x).\]
+	The XOR phase now can be shown as
+	\[\mathrm{MB}_{l}\cdot \mathrm{T/Ty_i}(x) \oplus \mathrm{MB}_{r}\cdot \mathrm{T/Ty_i}(x^{*}) \textcolor{red}{\neq} (\mathrm{MB}_{l} \oplus \mathrm{MB}_{r}) \cdot \mathrm{T/Ty_i}(x).\]
 	\\[2ex]
-	In this way, the decoding phase of $\mathrm{MB}$ cannot work in the following transformation and thus the faulty ciphertexts cannot be exploited for DFA attack.
+	In this way, the decoding phase $(MB_{l} \oplus MB_{r})^{-1}$ cannot work in the following transformation and thus the faulty ciphertexts cannot be exploited for DFA attack.
 }
 
 \frame
 {
-	\frametitle{Adaptive DFA against Table Redundancy Method}
+	\begin{figure}
+		\centering
+		\includegraphics[width=9.5cm]{./pics/TRS3.pdf}
+		\caption{A brute-force fault injection at one of the 9-th input while fixing the other faulty input in the table redundant scheme.}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Adaptive DFA against table redundancy method}
 	\begin{itemize}
 		\item $y_{l}, y_{r} \in \mathbb{F}_{2}^{8}$, an 8-bit input value of the two 9-th \textit{TypeII} respectively.
 		\item $x \in \mathbb{F}_{2}^{8}$, an 8-bit underlying state of $y_{l}$ and $y_{r}$.
@@ -893,16 +929,7 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 
 \frame
 {
-	\begin{figure}
-		\centering
-		\includegraphics[width=8cm]{./pics/TRS2.pdf}
-		\caption{The 9-th round input in the lookup sequence of table redundant scheme.}
-	\end{figure}
-}
-
-\frame
-{
-	Since $x$ take 256 different values, the 256 pairs of each ($y_{l},y_{r}$) can be collected. 
+	Since $x$ takes 256 different values, the 256 pairs of each ($y_{l},y_{r}$) can be collected.
 	\\[2ex]
 	Let $\mathcal{T}$ be a set of pairs values, such that
 	\[\mathcal{T}=\{(y_{l},y_{r})\ |\ y_{l} \in \mathbb{F}_{2}^{8},\ y_{r} \in \mathbb{F}_{2}^{8}\}\ with\ \#\mathcal{T}=256.\]
@@ -912,7 +939,16 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 
 \frame
 {
-	The injection on the entry of the 9-th round can be concluded by the following steps.
+	\begin{figure}
+		\centering
+		\includegraphics[width=9.5cm]{./pics/TRS4.pdf}
+		\caption{The replacement of 9-th round input in the table redundant scheme, $(y^{*}_{l},y^{*}_{r})\in\mathcal{T}\backslash(y_{l},y_{r})$.}
+	\end{figure}
+}
+
+\frame
+{
+	The injection at the entry of the 9-th round can be concluded by the following steps.
 	\begin{itemize}
 		\item Collecting the pairs values of $\mathcal{T}$ by repeatedly running the cryptographic program with random plaintexts.
 		\item Getting a fault-free cipertext with a chosen plaintext $P$.
@@ -921,30 +957,38 @@ In CHES 2016, Bos \textit{et al.} proposed that WBC can be attacked by SCA techn
 	\end{itemize}
 }
 
-
-
-
-\subsection{Open problem: Adaptive DCA on the CHES 2021 Proposal}
 \frame
-{ 
+{
+	\frametitle{Work factor of adaptive DFA on table redundancy}
+	After the reverse engineering, the experimental results show that,
+	\begin{enumerate}[1.]
+		\item at least 5 times encryption (3 times for collecting $\mathcal{T}$ and 2 times for the replacement of fault injection) can recover the 4-byte subkey (in a column) of the tenth round,
+		\item repeat the steps for the remain columns, such that totally at least about 20 times encryption can can extract the 16-byte tenth-round key.
+	\end{enumerate}
+}
+
+
+\subsection{Open problem: Adaptive DCA on the CHES 2021 proposal}
+\frame
+{
 	\frametitle{Adaptive DCA on the CHES 2021 Proposal}
 	In CHES 2021, Seker \textit{et al.} proposed a masking scheme for resisting DCA and Algebraic DCA attacks.
 	\\[2ex]
 	\begin{itemize}
 		\item $\tilde{x}_0,...,\tilde{x}_d,x_1,...,x_n$, shares of sensitive variable $x$.
-		\item Making: $x=\prod_{j=0}^{d}\tilde{x}_j\oplus \sum_{i=1}^{n}x_i$.
+		\item Masking: $x=\prod_{j=0}^{d}\tilde{x}_j\oplus \sum_{i=1}^{n}x_i$.
 	\end{itemize}
 }
 \frame
-{ 
+{
 	Note that,
 	\[Pr(\prod_{j=0}^{d}\tilde{x}_j=0)=1-(\frac{1}{2})^{d+1}.\]
 	\\[2ex]
-	Hence, $x=\sum_{i=1}^{n}x_i$ with a high probability for the increasing $d$, there exists $n$ nodes that are linearly correlated with a predictable vector. 
+	Hence, $x=\sum_{i=1}^{n}x_i$ with a high probability for the increasing $d$, there exists $n$ nodes that are linearly correlated with a predictable vector.
 	\\[2ex]
-	An Adaptive DCA attacker can mount the higher-order DCA attack [Bogdanov \textit{et al.} 2019] directly on the circuit after the reverse engineering effort.
+	An higher-order DCA attack [Bogdanov \textit{et al.} 2019] can be mounted on the circuit but with high complexity.
 	\\[2ex]
-	But how about decoding the key shares with the ability of a white-box attacker?
+	\textbf{How can an adaptive higher-order DCA attacker reduce the complexity?}
 }
 
 \section{Conclusion}
@@ -984,10 +1028,16 @@ Since the secret values are the most important in the white-box security model. 
 \begin{itemize}
 \setlength{\itemsep}{12pt}
 \item Security notions and definitions for white-box cryptography still need precise analysis.
-
+\begin{itemize}
+\item how to make a unified security framework for DCA/DFA/BGE?
+\item how to find a protection method in such a unified framework?
+\end{itemize}
 \item Only key extraction might not suitable for some applications, e.g., MACs and signatures.
 
 \item A secure white-box cryptography does not imply the white-box security of a secrecy system based on it.
+\begin{itemize}
+\item Do not forget misbehaving attacks.
+\end{itemize}
 \end{itemize}
 
 }
